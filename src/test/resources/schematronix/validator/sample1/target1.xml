@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<library>
+    <book id="book1" attr1="true" attr2="true" attr3="true">
+        <title>Dawnthief</title>
+        <author>James Barclay</author>
+    </book>
+    <book id="book2" attr2="true" attr3="true">
+        <title>Assassin's Apprentice</title>
+        <author>Robin Hobb</author>
+    </book>
+    <book id="book3" attr3="true">
+        <title></title>
+        <author></author>
+    </book>
+</library>

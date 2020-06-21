@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+      <title>SVRL report</title>
+      <style>
+                    body {margin:8px;}
+                    a[href] {color:blue;}
+                </style>
+   </head>
+   <body>
+      <h1>SVRL report</h1>
+      <div>Errors: 8</div>
+      <ul>
+         <li><b>error: (DocumentCodeMedicationList): The element value SHALL be one of 'code '721912009'
+               codeSystem '2.16.840.1.113883.6.96' displayName='Medication summary' codeSystemName='SNOMED
+               CT''.</b></li>
+         <li>Test: @nullFlavor or (@code='721912009' and @codeSystem='2.16.840.1.113883.6.96' and @displayName='Medication
+            summary' and @codeSystemName='SNOMED CT')</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:code[namespace-uri()='urn:hl7-org:v3'][1]/*:translation[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (ManufacturedMaterialEntryContentModule): The value for @codeSystem SHALL be '2.16.840.1.113883.6.73'.</b></li>
+         <li>Test: string(@codeSystem)=('2.16.840.1.113883.6.73') or not(@codeSystem)</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:structuredBody[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:section[namespace-uri()='urn:hl7-org:v3'][1]/*:entry[namespace-uri()='urn:hl7-org:v3'][1]/*:substanceAdministration[namespace-uri()='urn:hl7-org:v3'][1]/*:consumable[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedProduct[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedMaterial[namespace-uri()='urn:hl7-org:v3'][1]/*:code[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (ManufacturedMaterialEntryContentModule): The value for @codeSystem SHALL be '2.16.840.1.113883.6.73'.</b></li>
+         <li>Test: string(@codeSystem)=('2.16.840.1.113883.6.73') or not(@codeSystem)</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:structuredBody[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:section[namespace-uri()='urn:hl7-org:v3'][1]/*:entry[namespace-uri()='urn:hl7-org:v3'][2]/*:supply[namespace-uri()='urn:hl7-org:v3'][1]/*:product[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedProduct[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedMaterial[namespace-uri()='urn:hl7-org:v3'][1]/*:code[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (ManufacturedMaterialEntryContentModule)/d223297e193-true-d223536e0: 'pharm:quantity'
+               is defined as closed, and this element 'numerator' is not allowed, or not allowed
+               with this content. This may concern the templateId, code or id. Expected in this context:
+               pharm:numerator | pharm:denominator (rule-reference: d223297e193-true-d223536e0)</b></li>
+         <li>Test: not(.)</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:structuredBody[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:section[namespace-uri()='urn:hl7-org:v3'][1]/*:entry[namespace-uri()='urn:hl7-org:v3'][1]/*:substanceAdministration[namespace-uri()='urn:hl7-org:v3'][1]/*:consumable[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedProduct[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedMaterial[namespace-uri()='urn:hl7-org:v3'][1]/*:ingredient[namespace-uri()='urn:ihe:pharm'][1]/*:quantity[namespace-uri()='urn:ihe:pharm'][1]/*:numerator[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (ManufacturedMaterialEntryContentModule)/d223297e193-true-d223536e0: 'pharm:quantity'
+               is defined as closed, and this element 'denominator' is not allowed, or not allowed
+               with this content. This may concern the templateId, code or id. Expected in this context:
+               pharm:numerator | pharm:denominator (rule-reference: d223297e193-true-d223536e0)</b></li>
+         <li>Test: not(.)</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:structuredBody[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:section[namespace-uri()='urn:hl7-org:v3'][1]/*:entry[namespace-uri()='urn:hl7-org:v3'][1]/*:substanceAdministration[namespace-uri()='urn:hl7-org:v3'][1]/*:consumable[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedProduct[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedMaterial[namespace-uri()='urn:hl7-org:v3'][1]/*:ingredient[namespace-uri()='urn:ihe:pharm'][1]/*:quantity[namespace-uri()='urn:ihe:pharm'][1]/*:denominator[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (ManufacturedMaterialEntryContentModule)/d228141e193-true-d228380e0: 'pharm:quantity'
+               is defined as closed, and this element 'numerator' is not allowed, or not allowed
+               with this content. This may concern the templateId, code or id. Expected in this context:
+               pharm:numerator | pharm:denominator (rule-reference: d228141e193-true-d228380e0)</b></li>
+         <li>Test: not(.)</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:structuredBody[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:section[namespace-uri()='urn:hl7-org:v3'][1]/*:entry[namespace-uri()='urn:hl7-org:v3'][2]/*:supply[namespace-uri()='urn:hl7-org:v3'][1]/*:product[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedProduct[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedMaterial[namespace-uri()='urn:hl7-org:v3'][1]/*:ingredient[namespace-uri()='urn:ihe:pharm'][1]/*:quantity[namespace-uri()='urn:ihe:pharm'][1]/*:numerator[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (ManufacturedMaterialEntryContentModule)/d228141e193-true-d228380e0: 'pharm:quantity'
+               is defined as closed, and this element 'denominator' is not allowed, or not allowed
+               with this content. This may concern the templateId, code or id. Expected in this context:
+               pharm:numerator | pharm:denominator (rule-reference: d228141e193-true-d228380e0)</b></li>
+         <li>Test: not(.)</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:structuredBody[namespace-uri()='urn:hl7-org:v3'][1]/*:component[namespace-uri()='urn:hl7-org:v3'][1]/*:section[namespace-uri()='urn:hl7-org:v3'][1]/*:entry[namespace-uri()='urn:hl7-org:v3'][2]/*:supply[namespace-uri()='urn:hl7-org:v3'][1]/*:product[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedProduct[namespace-uri()='urn:hl7-org:v3'][1]/*:manufacturedMaterial[namespace-uri()='urn:hl7-org:v3'][1]/*:ingredient[namespace-uri()='urn:ihe:pharm'][1]/*:quantity[namespace-uri()='urn:ihe:pharm'][1]/*:denominator[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+      <ul>
+         <li><b>error: (cdach_other_Author): element hl7:functionCode[concat(@code, @codeSystem) = doc('include/voc-2.16.756.5.30.1.127.3.10.1.1.3-DYNAMIC.xml')//valueSet[1]/conceptList/concept/concat(@code,
+               @codeSystem) or @nullFlavor] is required [min 1x].</b></li>
+         <li>Test: count(hl7:functionCode[concat(@code, @codeSystem) = doc('include/voc-2.16.756.5.30.1.127.3.10.1.1.3-DYNAMIC.xml')//valueSet[1]/conceptList/concept/concat(@code,
+            @codeSystem) or @nullFlavor]) &gt;= 1</li>
+         <li>Location: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:author[namespace-uri()='urn:hl7-org:v3'][1]</li>
+      </ul>
+   </body>
+</html>
