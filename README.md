@@ -1,5 +1,12 @@
 # Schematronix
 
+![GitHub](https://img.shields.io/github/license/qligier/Schematronix)
+[![Build Status](https://travis-ci.org/qligier/Schematronix.png?branch=master)](https://travis-ci.org/qligier/Schematronix)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ch.qligier/Schematronix/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ch.qligier/Schematronix)
+[![Latest release](https://img.shields.io/github/release/qligier/Schematronix.svg)](https://github.com/qligier/Schematronix/releases/latest)
+[![Known Vulnerabilities](https://snyk.io/test/github/qligier/Schematronix/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/qligier/Schematronix?targetFile=pom.xml)
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/github/qligier/Schematronix)
+
 A Schematron validator inspired by the pure version of [ph-schematron](https://github.com/phax/ph-schematron), improved to efficiently
  validate CDA-CH-EMED documents.
 
