@@ -79,7 +79,7 @@ public class SchematronRule implements Cloneable {
     /**
      * Constructs a new instance from the parsed Schematron element.
      *
-     * @param ruleElement The element parsed from a <tt>rule</tt> tag.
+     * @param ruleElement The element parsed from a {@code rule} tag.
      * @return a new instance of {@link SchematronRule} initialized from the parsed element.
      * @throws SchematronParsingException if the Schematron file is invalid.
      */
@@ -150,7 +150,7 @@ public class SchematronRule implements Cloneable {
     /**
      * Constructs a new instance from the parsed Schematron element with a specified pattern ID.
      *
-     * @param ruleElement The element parsed from a <tt>rule</tt> tag.
+     * @param ruleElement The element parsed from a {@code rule} tag.
      * @param patternId   The pattern ID.
      * @return a new instance of {@link SchematronRule} initialized from the parsed element.
      * @throws SchematronParsingException if the Schematron file is invalid.

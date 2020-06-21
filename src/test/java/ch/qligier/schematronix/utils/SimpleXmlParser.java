@@ -25,12 +25,9 @@ public class SimpleXmlParser {
     private static DocumentBuilder documentBuilder;
 
     /**
-     *
-     * @param xmlContent
      * @throws ParserConfigurationException if a DocumentBuilder cannot be created which satisfies the configuration requested.
      * @throws IOException if any IO errors occur.
      * @throws SAXException if any parse errors occur.
-     * @return
      */
     public static Document parseString(@NonNull final String xmlContent) throws ParserConfigurationException, IOException, SAXException {
         if (documentBuilder == null) {
@@ -40,7 +37,6 @@ public class SimpleXmlParser {
     }
 
     /**
-     *
      * @throws ParserConfigurationException if a DocumentBuilder cannot be created which satisfies the configuration requested.
      */
     private static void initDocumentBuilder() throws ParserConfigurationException {

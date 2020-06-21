@@ -28,6 +28,7 @@ import java.util.Map;
  * The main class of the Schematronix validator.
  * <p>
  * A Schematronix file is a valid Schematron file with additional requirements:
+ * <ul>
  * <li>The Schematronix file shall not contain <code>phase</code> or <code>include</code> elements;
  * <li>Namespaces shall be declared before other elements (exceptions are otherwise to be expected);
  * <li>Patterns shall not be abstract;
@@ -36,6 +37,7 @@ import java.util.Map;
  * <li>Rules shall not be abstract;
  * <li>Rules shall contain only assertions and variables, no reports or extend;
  * <li>Assertions should not have roles, they all are treated as errors.
+ * </ul>
  *
  * @author Quentin Ligier
  * @version 0.1.0
