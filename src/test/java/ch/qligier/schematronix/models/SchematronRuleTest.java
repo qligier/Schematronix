@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +26,7 @@ class SchematronRuleTest {
     @DisplayName("Is a data object")
     void testIsADataObject() {
         final SchematronRule schematronRule = new SchematronRule("pattern", "id", "context", new ArrayList<>(), false);
-        final SchematronRule schematronRule2 = new SchematronRule("pattern2", "id2", "context2", null, true);
+        final SchematronRule schematronRule2 = new SchematronRule("pattern2", "id2", "context2", List.of(new SchematronLet("", "")), true);
         assertTrue(schematronRule.canEqual(schematronRule2));
 
         assertNotNull(schematronRule);
@@ -43,8 +44,8 @@ class SchematronRuleTest {
         assertEquals("id2", schematronRule.getId());
         schematronRule.setContext("context2");
         assertEquals("context2", schematronRule.getContext());
-        schematronRule.setChildren(null);
-        assertNull(schematronRule.getChildren());
+        schematronRule.setChildren(List.of(new SchematronLet("", "")));
+        assertEquals(1, schematronRule.getChildren().size());
         schematronRule.setAbstract(true);
         assertTrue(schematronRule.isAbstract());
         assertEquals(schematronRule, schematronRule2);
