@@ -46,7 +46,7 @@ public class SchematronRule implements Cloneable {
     private String context;
 
     /**
-     * The list of the rule children (assertions, extends, variables).
+     * The list of the rule children (assertions, extends, variables). The order in which the children are defined is kept.
      */
     private List<SchematronRuleChild> children;
 
