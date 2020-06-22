@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>Schematronix</name>
-    <description>An efficient, specialized Schematron validator</description>
+    <description>An efficient, specialized Java Schematron validator</description>
     <url>https://github.com/qligier/Schematronix</url>
 
     <licenses>
