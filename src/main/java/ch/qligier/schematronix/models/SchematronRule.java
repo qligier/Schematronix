@@ -48,7 +48,7 @@ public class SchematronRule implements Cloneable {
     /**
      * The list of the rule children (assertions, extends, variables). The order in which the children are defined is kept.
      */
-    private List<SchematronRuleChild> children;
+    private List<SchematronRuleChild> children = new ArrayList<>();
 
     /**
      * Whether the rule is abstract. An abstract rule shall not have a context attribute but shall have an ID.
