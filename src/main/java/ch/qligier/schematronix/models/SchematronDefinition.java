@@ -64,9 +64,9 @@ public class SchematronDefinition {
     }
 
     /**
-     * Resolves the extended rules from a given rule. The function is recursive and will call itself as many times as necessary
-     * to fully resolve all extended rules. Extended rules are added at the position the 'extend' tag was encountered to preserve the
-     * Schematron order.
+     * Resolves the extended rules from a given rule. The function is recursive and will call itself as many times as necessary to fully
+     * resolve all extended rules. Extended rules are added at the position the 'extend' tag was encountered to preserve the Schematron
+     * order.
      *
      * @param extendedRule The instance of the rule to resolve.
      * @return an instance of the rule that is self-contained (it does not extend other rules anymore).

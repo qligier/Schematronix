@@ -70,8 +70,8 @@ class XPathTransformer {
 
     /**
      * Normalizes the attribute selectors in XPath expressions. It removes whitespaces around the equal sign of an attribute selector; by
-     * example in the expression: '*[@root = '1.3.6']'. It is useful to boost the efficiency of {@link #optimizeDuplicateFilter(String)}
-     * and should be applied before.
+     * example in the expression: '*[@root = '1.3.6']'. It is useful to boost the efficiency of {@link #optimizeDuplicateFilter(String)} and
+     * should be applied before.
      *
      * @param xpathExpression The XPath expression to normalize.
      * @return the normalized XPath expression.

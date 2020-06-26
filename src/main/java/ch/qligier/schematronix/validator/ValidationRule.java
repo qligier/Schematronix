@@ -66,7 +66,7 @@ class ValidationRule {
      * @param processor                 The XPath processor.
      * @param namespaces                The list of namespaces defined. The key is the namespace prefix, the value is the namespace URI.
      * @param contextItems              The rule context as a list of evaluated items (nodes, values).
-     * @param schematronixDirectoryPath The path of the Schematronix file parent directory or null if it's not needed.
+     * @param schematronixDirectoryPath The path of the Schematronix file parent directory or {@code null} if it's not needed.
      * @param patternAssertedNodes      The list of hashes of nodes that have already been asserted in this pattern.
      */
     ValidationRule(@NonNull final Processor processor,
@@ -121,8 +121,8 @@ class ValidationRule {
      * Executes the validation rule and stores the results in the report. If failFast is set, the validation stops at the first error.
      *
      * @param report   The report that will be updated with the rule validation results.
-     * @param failFast if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is
-     *                 fully performed.
+     * @param failFast if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is fully
+     *                 performed.
      * @throws SaxonApiException               if the execution of an XPath expression fails.
      * @throws SchematronixValidationException if the validation has been stopped at the first error.
      */

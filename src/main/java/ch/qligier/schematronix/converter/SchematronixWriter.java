@@ -211,11 +211,13 @@ public class SchematronixWriter {
     }
 
     /**
-     * Initializes and configures a {@link DocumentBuilder} that is not vulnerable to XXE injections (XInclude, Billions Laugh Attack, ...).
+     * Initializes and configures a {@link DocumentBuilder} that is not vulnerable to XXE injections (XInclude, Billions Laugh Attack,
+     * ...).
      *
      * @return a configured DocumentBuilder.
      * @throws ParserConfigurationException if the parser is not Xerces2 compatible.
-     * @see <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j">XML External Entity Prevention Cheat Sheet</a>
+     * @see <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j">XML
+     * External Entity Prevention Cheat Sheet</a>
      */
     private static DocumentBuilder newSafeDocumentBuilder() throws ParserConfigurationException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

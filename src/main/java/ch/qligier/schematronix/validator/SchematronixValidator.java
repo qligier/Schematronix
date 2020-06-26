@@ -61,7 +61,7 @@ public class SchematronixValidator {
     private final XdmNode domRoot;
 
     /**
-     * The current pattern ID or null if we are outside a pattern.
+     * The current pattern ID or {@code null} if we are outside a pattern.
      */
     private String currentPatternId = null;
 
@@ -72,7 +72,7 @@ public class SchematronixValidator {
     private final List<Integer> assertedNodes = new ArrayList<>();
 
     /**
-     * The current validation rule or null if we are outside a rule.
+     * The current validation rule or {@code null} if we are outside a rule.
      */
     private ValidationRule currentRule = null;
 
@@ -135,8 +135,8 @@ public class SchematronixValidator {
      * Validates the target file with the provided Schematronix definition and returns a report that contains the eventual validation
      * errors.
      *
-     * @param failFast if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is
-     *                 fully performed.
+     * @param failFast if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is fully
+     *                 performed.
      * @return the validation report containing the error messages, if any.
      * @throws SaxonApiException            if there is an error while compiling/executing an XPath expression.
      * @throws SchematronixParsingException if there is an error with the Schematronix file.
@@ -239,7 +239,7 @@ public class SchematronixValidator {
      * Starts a pattern.
      *
      * @param patternId The pattern ID.
-     * @throws SchematronixParsingException if the {@code patternId} is null.
+     * @throws SchematronixParsingException if the {@code patternId} is {@code null}.
      */
     private void startPattern(final String patternId) throws SchematronixParsingException {
         if (patternId == null) {
@@ -267,7 +267,7 @@ public class SchematronixValidator {
      * @param ruleContextXpath The XPath expression of the context.
      * @param ruleId           The rule ID or {@code null} if it's not defined.
      * @throws SaxonApiException            if an error is encountered when compiling an XPath expression.
-     * @throws SchematronixParsingException if the rule {@code context} or {@code pattern} is null.
+     * @throws SchematronixParsingException if the rule {@code context} or {@code pattern} is {@code null}.
      */
     private void createRule(final String ruleContextXpath,
                             final String ruleId) throws SaxonApiException, SchematronixParsingException {
@@ -361,7 +361,8 @@ public class SchematronixValidator {
      *
      * @return a safe {@link Processor}.
      * @see <a href="https://www.saxonica.com/documentation/index.html#!configuration/config-features">Configuration Features</a>
-     * @see <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html">XML External Entity Prevention Cheat Sheet</a>
+     * @see <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html">XML External Entity
+     * Prevention Cheat Sheet</a>
      */
     @SuppressWarnings("deprecation")
     private static Processor getProcessor() {

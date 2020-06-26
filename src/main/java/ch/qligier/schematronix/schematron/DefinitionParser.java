@@ -5,7 +5,10 @@ import ch.qligier.schematronix.models.SchematronDefinition;
 import ch.qligier.schematronix.models.SchematronRule;
 import lombok.NonNull;
 import lombok.extern.java.Log;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -44,8 +47,8 @@ public class DefinitionParser {
     }
 
     /**
-     * Parses a Schematron document and returns its definition as an instance of {@link SchematronDefinition}. No transformation
-     * operation is applied during the parsing.
+     * Parses a Schematron document and returns its definition as an instance of {@link SchematronDefinition}. No transformation operation
+     * is applied during the parsing.
      *
      * @param definitionFile The {@link File} instance that points to the Schematron XML file.
      * @return the parsed Schematron definition.
@@ -200,7 +203,7 @@ public class DefinitionParser {
      * Parses a 'rule' element and adds it to the definition.
      *
      * @param ruleElement The node 'rule' to parse.
-     * @param patternId   The pattern ID if it has been defined or null.
+     * @param patternId   The pattern ID if it has been defined or {@code null}.
      * @param definition  The Schematron definition.
      * @throws SchematronParsingException if the Schematron file is invalid.
      */
@@ -219,11 +222,13 @@ public class DefinitionParser {
     }
 
     /**
-     * Initializes and configures a {@link DocumentBuilder} that is not vulnerable to XXE injections (XInclude, Billions Laugh Attack, ...).
+     * Initializes and configures a {@link DocumentBuilder} that is not vulnerable to XXE injections (XInclude, Billions Laugh Attack,
+     * ...).
      *
      * @return a configured DocumentBuilder.
      * @throws ParserConfigurationException if the parser is not Xerces2 compatible.
-     * @see <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j">XML External Entity Prevention Cheat Sheet</a>
+     * @see <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#html#jaxp-documentbuilderfactory-saxparserfactory-and-dom4j">XML
+     * External Entity Prevention Cheat Sheet</a>
      */
     private static DocumentBuilder newSafeDocumentBuilder() throws ParserConfigurationException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
