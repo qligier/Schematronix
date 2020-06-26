@@ -350,7 +350,7 @@ public class SchematronixValidator {
      * @return a safe {@link XMLInputFactory}.
      */
     private static XMLInputFactory getXmlInputFactory() {
-        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newDefaultFactory();
         xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
         xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         return xmlInputFactory;

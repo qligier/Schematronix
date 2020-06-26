@@ -40,7 +40,7 @@ public class SimpleXmlParser {
      * @throws ParserConfigurationException if a DocumentBuilder cannot be created which satisfies the configuration requested.
      */
     private static void initDocumentBuilder() throws ParserConfigurationException {
-        final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
         documentBuilder = dbFactory.newDocumentBuilder();
     }
 }

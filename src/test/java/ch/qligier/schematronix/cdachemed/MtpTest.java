@@ -42,7 +42,7 @@ class MtpTest {
 
     @Test
     void testSchematronix() throws Exception {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         final DocumentBuilder documentBuilder = factory.newDocumentBuilder();
         final Document document = documentBuilder.parse(this.schematronixFile);
 

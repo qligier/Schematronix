@@ -33,7 +33,7 @@ class SchematronixWriterTest {
         this.definitionParser = new DefinitionParser();
         this.schematronixWriter = new SchematronixWriter();
 
-        final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
         this.documentBuilder = dbFactory.newDocumentBuilder();
     }
 

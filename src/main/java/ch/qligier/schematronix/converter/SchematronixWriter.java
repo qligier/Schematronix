@@ -54,7 +54,7 @@ public class SchematronixWriter {
     public SchematronixWriter() throws ParserConfigurationException, TransformerConfigurationException {
         this.documentBuilder = newSafeDocumentBuilder();
 
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        final TransformerFactory transformerFactory = TransformerFactory.newDefaultInstance();
         this.xmlTransformer = transformerFactory.newTransformer();
         this.xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
         this.xmlTransformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
@@ -220,7 +220,7 @@ public class SchematronixWriter {
      * External Entity Prevention Cheat Sheet</a>
      */
     private static DocumentBuilder newSafeDocumentBuilder() throws ParserConfigurationException {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         factory.setNamespaceAware(true);
         factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         factory.setFeature("http://apache.org/xml/features/xinclude", false);

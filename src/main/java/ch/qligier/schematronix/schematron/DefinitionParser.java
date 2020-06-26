@@ -231,7 +231,7 @@ public class DefinitionParser {
      * External Entity Prevention Cheat Sheet</a>
      */
     private static DocumentBuilder newSafeDocumentBuilder() throws ParserConfigurationException {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         factory.setNamespaceAware(true);
         factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         factory.setFeature("http://apache.org/xml/features/xinclude", false);
