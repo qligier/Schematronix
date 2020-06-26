@@ -36,8 +36,9 @@ public class SchematronRule implements Cloneable {
     private String pattern;
 
     /**
-     * The rule ID, or {@code null}.
+     * The rule ID. If it isn't set in the definition, the parser will generate one.
      */
+    @NonNull
     private String id;
 
     /**
