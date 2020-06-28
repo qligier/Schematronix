@@ -47,12 +47,10 @@ class SchematronixValidatorSample2Test {
             "<!DOCTYPE replace [<!ENTITY entity \"VULNERABLE\"> ]>" +
             "<ClinicalDocument><title>&entity;</title></ClinicalDocument>";
 
-        assertThrows(SaxonApiException.class, () -> {
-            new SchematronixValidator(
-                new StreamSource(new StringReader(xml)),
-                new StreamSource(new StringReader(schematron))
-            );
-        });
+        assertThrows(SaxonApiException.class, () -> new SchematronixValidator(
+            new StreamSource(new StringReader(xml)),
+            new StreamSource(new StringReader(schematron))
+        ));
     }
 
     /**
@@ -72,12 +70,10 @@ class SchematronixValidatorSample2Test {
             "<!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file:///" + FILE_TO_FETCH + "\"> ]>" +
             "<ClinicalDocument><title>&xxe;</title></ClinicalDocument>";
 
-        assertThrows(SaxonApiException.class, () -> {
-            new SchematronixValidator(
-                new StreamSource(new StringReader(xml)),
-                new StreamSource(new StringReader(schematron))
-            );
-        });
+        assertThrows(SaxonApiException.class, () -> new SchematronixValidator(
+            new StreamSource(new StringReader(xml)),
+            new StreamSource(new StringReader(schematron))
+        ));
     }
 
     /**
@@ -97,12 +93,10 @@ class SchematronixValidatorSample2Test {
             "<!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"" + URL_TO_FETCH + "\"> ]>" +
             "<ClinicalDocument><title>&xxe;</title></ClinicalDocument>";
 
-        assertThrows(SaxonApiException.class, () -> {
-            new SchematronixValidator(
-                new StreamSource(new StringReader(xml)),
-                new StreamSource(new StringReader(schematron))
-            );
-        });
+        assertThrows(SaxonApiException.class, () -> new SchematronixValidator(
+            new StreamSource(new StringReader(xml)),
+            new StreamSource(new StringReader(schematron))
+        ));
     }
 
     /**

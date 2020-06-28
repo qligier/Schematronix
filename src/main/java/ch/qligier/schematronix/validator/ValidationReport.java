@@ -12,7 +12,6 @@ import java.util.List;
  * @author Quentin Ligier
  */
 @Data
-@SuppressWarnings("WeakerAccess")
 public class ValidationReport {
 
     /**
