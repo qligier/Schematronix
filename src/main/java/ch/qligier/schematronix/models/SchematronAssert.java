@@ -17,7 +17,6 @@ import java.util.List;
  * An assertion made about the context nodes.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @EqualsAndHashCode(callSuper = false)
 @Data

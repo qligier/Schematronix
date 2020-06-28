@@ -27,7 +27,6 @@ import java.util.UUID;
  * When parsing a Schematron file, all but the main phase are ignored.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Log
 public class DefinitionParser {

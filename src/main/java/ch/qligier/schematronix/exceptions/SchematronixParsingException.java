@@ -6,7 +6,6 @@ import lombok.NonNull;
  * An exception thrown when the parsing of a Schematronix file fails.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 public class SchematronixParsingException extends Exception {
 

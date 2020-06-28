@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * context expression.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Data
 @AllArgsConstructor

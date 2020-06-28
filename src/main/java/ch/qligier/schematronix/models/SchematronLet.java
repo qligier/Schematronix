@@ -12,7 +12,6 @@ import org.w3c.dom.Element;
  * A declaration of a named variable.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @EqualsAndHashCode(callSuper = false)
 @Data

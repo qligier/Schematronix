@@ -14,7 +14,6 @@ import java.util.*;
  * A rule of the Schematronix validator. A rule is made of variable definitions and assertions that apply to a list of context items.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Data
 class ValidationRule {

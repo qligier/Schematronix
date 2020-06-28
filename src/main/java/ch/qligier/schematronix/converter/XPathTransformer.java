@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
  * A transformer of XPath expressions that are either fixes or optimizations for the Schematronix use-case.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 class XPathTransformer {
 

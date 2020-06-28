@@ -7,7 +7,6 @@ import lombok.NonNull;
  * The list of Schematron assert roles.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Getter
 public enum SchematronAssertRole {

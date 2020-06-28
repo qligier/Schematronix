@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
  * Some Schematron constants.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @UtilityClass
 @SuppressWarnings("WeakerAccess")

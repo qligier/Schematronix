@@ -10,7 +10,6 @@ import java.util.List;
  * The model containing the Schematronix validation results of an XML file.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Data
 @SuppressWarnings("WeakerAccess")

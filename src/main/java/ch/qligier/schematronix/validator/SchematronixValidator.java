@@ -40,7 +40,6 @@ import java.util.Map;
  * </ul>
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Log
 public class SchematronixValidator {

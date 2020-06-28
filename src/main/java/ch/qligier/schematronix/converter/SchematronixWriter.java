@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
  * A specialized class that can write a Schematronix file from a Schematron definition.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @SuppressWarnings("squid:S1905")
 public class SchematronixWriter {

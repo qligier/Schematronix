@@ -12,7 +12,6 @@ import org.w3c.dom.Element;
  * The extends element allows reference to the contents of other declarations.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @EqualsAndHashCode(callSuper = false)
 @Data

@@ -11,7 +11,6 @@ import java.util.*;
  * Data structure of a parsed Schematron file.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 @Data
 public class SchematronDefinition {
