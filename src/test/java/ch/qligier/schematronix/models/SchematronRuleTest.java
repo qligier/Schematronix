@@ -52,8 +52,11 @@ class SchematronRuleTest {
 
         assertTrue(schematronRule.toString().length() > 0);
 
-        assertEquals(schematronRule, schematronRule.clone());
-        assertNotSame(schematronRule, schematronRule.clone());
+        final SchematronRule clonedRule = schematronRule.clone();
+        assertEquals(schematronRule, clonedRule);
+        assertNotSame(schematronRule, clonedRule);
+        assertEquals(schematronRule.getChildren().get(0), clonedRule.getChildren().get(0));
+        assertNotSame(schematronRule.getChildren().get(0), clonedRule.getChildren().get(0));
     }
 
     /**

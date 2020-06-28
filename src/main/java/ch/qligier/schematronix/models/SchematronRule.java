@@ -169,11 +169,14 @@ public class SchematronRule implements Cloneable {
      * @return the deep-cloned object.
      */
     public SchematronRule clone() {
-        final SchematronRule clonedRule = new SchematronRule();
-        clonedRule.setAbstract(this.isAbstract);
-        clonedRule.setContext(this.context);
-        clonedRule.setId(this.id);
-        clonedRule.setPattern(this.pattern);
+        final SchematronRule clonedRule;
+        try {
+            clonedRule = (SchematronRule) super.clone();
+        } catch (final CloneNotSupportedException e) {
+            // This should never occur
+            log.severe("SchematronRule does not implement Cloneable");
+            return null;
+        }
         if (this.children != null) {
             clonedRule.setChildren(this.children.stream().map(SchematronRuleChild::clone).collect(Collectors.toList()));
         }
