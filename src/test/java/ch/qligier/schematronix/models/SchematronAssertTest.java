@@ -24,21 +24,24 @@ class SchematronAssertTest {
     @Test
     @DisplayName("Is a data object")
     void testIsADataObject() {
-        final SchematronAssert schematronAssert = new SchematronAssert(SchematronAssertRole.WARN, "II", new ArrayList<>());
-        final SchematronAssert schematronAssert2 = new SchematronAssert(SchematronAssertRole.FATAL, "AA", null);
+        final SchematronAssert schematronAssert = new SchematronAssert(SchematronAssertRole.WARN, "II", "see", new ArrayList<>());
+        final SchematronAssert schematronAssert2 = new SchematronAssert(SchematronAssertRole.FATAL, "AA", null, null);
         assertTrue(schematronAssert.canEqual(schematronAssert2));
 
         assertNotNull(schematronAssert);
         assertNotNull(schematronAssert2);
-        assertEquals("II", schematronAssert.getTest());
         assertEquals(SchematronAssertRole.WARN, schematronAssert.getRole());
+        assertEquals("II", schematronAssert.getTest());
+        assertEquals("see", schematronAssert.getSee());
         assertEquals(0, schematronAssert.getMessageNodes().size());
         assertNotEquals(schematronAssert, schematronAssert2);
 
-        schematronAssert.setTest("AA");
-        assertEquals("AA", schematronAssert.getTest());
         schematronAssert.setRole(SchematronAssertRole.FATAL);
         assertEquals(SchematronAssertRole.FATAL, schematronAssert.getRole());
+        schematronAssert.setTest("AA");
+        assertEquals("AA", schematronAssert.getTest());
+        schematronAssert.setSee(null);
+        assertNull(schematronAssert.getSee());
         schematronAssert.setMessageNodes(null);
         assertNull(schematronAssert.getMessageNodes());
         assertEquals(schematronAssert, schematronAssert2);
@@ -60,8 +63,9 @@ class SchematronAssertTest {
             .getDocumentElement();
         final SchematronAssert schematronAssert = SchematronAssert.fromAssertElement(assertElement);
         assertNotNull(schematronAssert);
-        assertEquals("II", schematronAssert.getTest());
         assertEquals(SchematronAssertRole.WARN, schematronAssert.getRole());
+        assertEquals("II", schematronAssert.getTest());
+        assertEquals("http", schematronAssert.getSee());
         assertEquals(2, schematronAssert.getMessageNodes().size());
     }
 

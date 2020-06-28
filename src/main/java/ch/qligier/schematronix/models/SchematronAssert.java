@@ -15,8 +15,6 @@ import java.util.List;
 
 /**
  * An assertion made about the context nodes.
- * <p>
- * TODO: Add 'see' attribute.
  *
  * @author Quentin Ligier
  * @version 0.1.0
@@ -37,7 +35,12 @@ public class SchematronAssert extends SchematronRuleChild implements Cloneable {
     private String test;
 
     /**
-     * The list of nodes (text or tag) that makes the assert's detail message.
+     *
+     */
+    private String see;
+
+    /**
+     * The list of {@link Node}s (text or tag) that makes the assert's detail message.
      */
     private List<Node> messageNodes;
 
@@ -47,7 +50,7 @@ public class SchematronAssert extends SchematronRuleChild implements Cloneable {
      * @return the cloned object.
      */
     public SchematronAssert clone() {
-        return new SchematronAssert(role, test, messageNodes);
+        return new SchematronAssert(role, test, see, messageNodes);
     }
 
     /**
@@ -81,6 +84,7 @@ public class SchematronAssert extends SchematronRuleChild implements Cloneable {
         return new SchematronAssert(
             role,
             assertElement.getAttribute("test"),
+            assertElement.getAttribute("see"),
             messageNodes
         );
     }
