@@ -33,7 +33,7 @@ Schematronix was developed with the JDK11. Saxon is used as XQuery processor.
 final File definitionFile = new File("cdachemed-MTP.sch");
 final DefinitionParser parser = new DefinitionParser();
 final SchematronDefinition definition = parser.parse(definitionFile);
-
+// Update the definition if you want, adding, modifying or removing rules or asserts
 final File schematronixFile = new File("cdachemed-MTP-schematronix.sch");
 final SchematronixWriter schematronixWriter = new SchematronixWriter();
 schematronixWriter.writeSchematronix(definition, schematronixFile);
@@ -41,7 +41,7 @@ schematronixWriter.writeSchematronix(definition, schematronixFile);
 // Do it as many time as you want
 final File cceFile = new File("cce-MTP.xml");
 final SchematronixValidator validator = new SchematronixValidator(new StreamSource(cceFile), schematronixFile);
-final boolean failFast = false; // True for a fast validation, false for a complete validation
+final boolean failFast = false; // `true` for a fast validation, `false` for a complete validation
 final SchematronixValidationReport report = validator->validate(failFast);
 System.out.println("CCE passed validation: " + report.isSchematronixValid());
 ```
@@ -71,3 +71,5 @@ That's what the Schematronix tries to achieve. The optimized Schematron file (ca
 - Only the main phase is kept, as it contains all rules in the CDA-CH-EMED project.
 - The only assert role that is kept is _error_, other asserts and all reports are dismissed. The CDA-CH-EMED project only uses _error_ and
  _warning_ roles.
+ 
+Because the validator ignores all these features, the Schematronix writer will do as well.
