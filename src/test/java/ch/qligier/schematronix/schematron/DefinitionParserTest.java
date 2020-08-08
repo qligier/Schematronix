@@ -44,8 +44,8 @@ class DefinitionParserTest {
         assertTrue(definition.getDefinedRules().containsKey("rule3"));
         assertTrue(definition.getDefinedRules().containsKey("rule4"));
 
-        assertEquals(1, definition.getEnabledPatterns().size());
-        assertTrue(definition.getEnabledPatterns().contains("pattern1"));
+        assertEquals(1, definition.getPatterns().size());
+        assertEquals("pattern1", definition.getPatterns().iterator().next().getId());
 
         assertEquals(1, definition.getEnabledRules().size());
         assertTrue(definition.getEnabledRules().contains("rule4"));

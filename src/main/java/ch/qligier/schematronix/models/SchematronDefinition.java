@@ -21,9 +21,9 @@ public class SchematronDefinition {
     private final Map<String, SchematronRule> definedRules = new HashMap<>();
 
     /**
-     * The list of IDs of enabled pattern. The order in which the patterns are defined in the main phase is kept.
+     * The list of patterns. The order in which the patterns are defined in the main phase is kept.
      */
-    private final Set<String> enabledPatterns = new LinkedHashSet<>();
+    private final Set<SchematronPattern> patterns = new LinkedHashSet<>();
 
     /**
      * The list of IDs of enabled rule IDs.

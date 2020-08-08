@@ -98,12 +98,12 @@ public class SchematronixWriter {
         }
 
         // Add patterns and rules
-        for (final String patternId : definition.getEnabledPatterns()) {
+        for (final SchematronPattern pattern : definition.getPatterns()) {
             final Element patternElement =
                 document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.PATTERN_TAG_NAME);
-            patternElement.setAttribute("id", patternId);
+            patternElement.setAttribute("id", pattern.getId());
 
-            for (final SchematronRule rule : getSchematronixRulesForPattern(definition, patternId)) {
+            for (final SchematronRule rule : getSchematronixRulesForPattern(definition, pattern.getId())) {
                 final Element ruleElement =
                     document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.RULE_TAG_NAME);
                 ruleElement.setAttribute("id", rule.getId());

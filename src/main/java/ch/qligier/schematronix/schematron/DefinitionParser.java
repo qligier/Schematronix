@@ -2,6 +2,7 @@ package ch.qligier.schematronix.schematron;
 
 import ch.qligier.schematronix.exceptions.SchematronParsingException;
 import ch.qligier.schematronix.models.SchematronDefinition;
+import ch.qligier.schematronix.models.SchematronPattern;
 import ch.qligier.schematronix.models.SchematronRule;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -152,8 +153,7 @@ public class DefinitionParser {
             final Element element = (Element) nodes.item(i);
             switch (element.getNodeName()) {
                 case SchematronConstants.PATTERN_TAG_NAME:
-                    final String patternId = element.getAttribute("id");
-                    definition.getEnabledPatterns().add(patternId);
+                    definition.getPatterns().add(SchematronPattern.fromPatternElement(element));
                     break;
                 case SchematronConstants.RULE_TAG_NAME:
                     final String ruleId = element.getAttribute("id");
