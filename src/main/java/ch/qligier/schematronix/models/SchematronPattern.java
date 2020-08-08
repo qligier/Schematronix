@@ -40,9 +40,9 @@ public class SchematronPattern {
     /**
      * Constructs a new instance from the parsed Schematron element.
      *
-     * @param patternElement The element parsed from a <tt>pattern</tt> tag.
+     * @param patternElement The element parsed from a {@code pattern} tag.
      * @return a new instance of {@link SchematronPattern} initialized from the parsed element.
-     * @throws SchematronParsingException if the given element is not a valid <tt>pattern</tt> tag.
+     * @throws SchematronParsingException if the given element is not a valid {@code pattern} tag.
      */
     public static SchematronPattern fromPatternElement(@NonNull final Element patternElement) throws SchematronParsingException {
         if (!SchematronConstants.PATTERN_TAG_NAME.equalsIgnoreCase(patternElement.getTagName())) {

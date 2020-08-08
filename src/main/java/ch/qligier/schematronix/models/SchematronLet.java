@@ -40,9 +40,9 @@ public class SchematronLet extends SchematronRuleChild implements Cloneable {
     /**
      * Constructs a new instance from the parsed Schematron element.
      *
-     * @param letElement The element parsed from a <tt>let</tt> tag.
+     * @param letElement The element parsed from a {@code let} tag.
      * @return a new instance of {@link SchematronLet} initialized from the parsed element.
-     * @throws SchematronParsingException if the given element is not a valid <tt>let</tt> tag.
+     * @throws SchematronParsingException if the given element is not a valid {@code let} tag.
      */
     static SchematronLet fromLetElement(@NonNull final Element letElement) throws SchematronParsingException {
         if (!SchematronConstants.LET_TAG_NAME.equalsIgnoreCase(letElement.getTagName())) {

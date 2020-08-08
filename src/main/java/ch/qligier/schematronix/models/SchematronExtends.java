@@ -35,9 +35,9 @@ public class SchematronExtends extends SchematronRuleChild implements Cloneable 
     /**
      * Constructs a new instance from the parsed Schematron element.
      *
-     * @param extendsElement The element parsed from a <tt>extends</tt> tag.
+     * @param extendsElement The element parsed from a {@code extends} tag.
      * @return a new instance of {@link SchematronExtends} initialized from the parsed element.
-     * @throws SchematronParsingException if the given element is not a valid <tt>extends</tt> tag.
+     * @throws SchematronParsingException if the given element is not a valid {@code extends} tag.
      */
     static SchematronExtends fromExtendsElement(@NonNull final Element extendsElement) throws SchematronParsingException {
         if (!SchematronConstants.EXTENDS_TAG_NAME.equalsIgnoreCase(extendsElement.getTagName())) {

@@ -55,9 +55,9 @@ public class SchematronAssert extends SchematronRuleChild implements Cloneable {
     /**
      * Constructs a new instance from the parsed Schematron element.
      *
-     * @param assertElement The element parsed from a <tt>assert</tt> tag.
+     * @param assertElement The element parsed from a {@code assert} tag.
      * @return a new instance of {@link SchematronAssert} initialized from the parsed element.
-     * @throws SchematronParsingException if the given element is not a valid <tt>assert</tt> tag.
+     * @throws SchematronParsingException if the given element is not a valid {@code assert} tag.
      */
     static SchematronAssert fromAssertElement(@NonNull final Element assertElement) throws SchematronParsingException {
         if (!SchematronConstants.ASSERT_TAG_NAME.equalsIgnoreCase(assertElement.getTagName())) {
