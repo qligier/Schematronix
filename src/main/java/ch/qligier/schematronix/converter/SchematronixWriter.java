@@ -39,11 +39,6 @@ public class SchematronixWriter {
     private final Transformer xmlTransformer;
 
     /**
-     * The Schematronix XPath transformer.
-     */
-    private final XPathTransformer xPathTransformer;
-
-    /**
      * Constructor.
      *
      * @throws ParserConfigurationException      if the implementation is not available or cannot be instantiated.
@@ -56,8 +51,6 @@ public class SchematronixWriter {
         this.xmlTransformer = transformerFactory.newTransformer();
         this.xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
         this.xmlTransformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-        this.xPathTransformer = new XPathTransformer();
     }
 
     /**
@@ -172,17 +165,8 @@ public class SchematronixWriter {
     private SchematronRule convertRuleToSchematronix(@NonNull final SchematronDefinition definition,
                                                      @NonNull final SchematronRule rule) {
         final SchematronRule schematronixRule = rule.clone();
-
         // Remove children that are 'extends' elements and replace them by their own list of children
         schematronixRule.setChildren(resolveExtendedChildren(definition, rule));
-
-        // Transform the XPath expression of assertions and variables
-        schematronixRule.setContext(this.xPathTransformer.transform(schematronixRule.getContext()));
-
-        // Remove assertions that are not errors
-        schematronixRule.getChildren()
-            .removeIf((SchematronRuleChild ruleChild) -> ruleChild instanceof SchematronAssert && ((SchematronAssert) ruleChild).getRole() != SchematronAssertRole.ERROR);
-
         return schematronixRule;
     }
 

@@ -49,9 +49,9 @@ class SchematronixWriterTest {
 
         assertEquals(2, doc.getElementsByTagName("pattern").getLength());
         assertEquals(4, doc.getElementsByTagName("rule").getLength());
-        assertEquals(10, doc.getElementsByTagName("assert").getLength());
+        assertEquals(12, doc.getElementsByTagName("assert").getLength());
         assertEquals(
-            "//*[substance[template[@root='1']]]/substance[template[@root='1]]/template[@root='1']",
+            "*[substance[template[@root = '1']]]/substance[template[@root = '1]]/template[@root='1']",
             getNthElementByTagName(doc, "rule", 0).getAttribute("context")
         );
     }
