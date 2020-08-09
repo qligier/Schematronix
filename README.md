@@ -31,9 +31,9 @@ Schematronix was developed with the JDK11. Saxon is used as XQuery processor.
 ```java
 // Convert the Schematron definition file to an optimized version
 final File definitionFile = new File("cdachemed-MTP.sch");
-final DefinitionParser parser = new DefinitionParser();
+final SchematronParser parser = new SchematronParser();
 final SchematronDefinition definition = parser.parse(definitionFile);
-// Update the definition if you want, adding, modifying or removing rules or asserts
+// Update the definition if you want, adding, modifying or removing rules, asserts or reports
 final File schematronixFile = new File("cdachemed-MTP-schematronix.sch");
 final SchematronixWriter schematronixWriter = new SchematronixWriter();
 schematronixWriter.writeSchematronix(definition, schematronixFile);
@@ -61,15 +61,15 @@ The drawback of this, as seen in the ph-schematron, is that the XSLT binding is 
  
 Is there still a way to use an XPath binding with _let_ elements?
 That's what the Schematronix tries to achieve. The optimized Schematron file (called Schematronix file internally, while it still is a
- valid Schematron file) is made of the following
- optimizations:
+valid Schematron file) is made of the following optimizations (all these limitations are shared by the Schematronix writer and validator):
 
-- It does not depend on includes. This one helps a lot when reading the Schematron file, as the original CDA-CH-EMED Schematron files
+- It does not support includes. This one helps a lot when reading the Schematron file, as the original CDA-CH-EMED Schematron files
  contain a lot of these (`cdachemed-MTP.sch` alone includes 204 other files).
 - It does not contain rules that extend other rules. All rules directly contain all their tests, no need for lookups. The resulting file
- size increases, but storage is cheap and reading it with a streaming API (e.g. StAX) is not harder.
-- Only the main phase is kept, as it contains all rules in the CDA-CH-EMED project.
-- The only assert role that is kept is _error_, other asserts and all reports are dismissed. The CDA-CH-EMED project only uses _error_ and
- _warning_ roles.
+ size increases, but storage is cheap and reading it with a streaming API (e.g. StAX) is not harder. Abstract rules and patterns are
+ thus not supported.
+- Only the main phase is evaluated. If multiple phases are to be supported, the way to go would be to generate one Schematronix file per
+ phase.
  
-Because the validator ignores all these features, the Schematronix writer will do as well.
+Even though they are supported by the validator, it is recommended to get rid of `reports` and non-error `asserts` if a validation report
+ is not expected.
