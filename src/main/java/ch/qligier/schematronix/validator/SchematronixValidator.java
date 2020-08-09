@@ -174,7 +174,10 @@ public class SchematronixValidator {
                         );
                         break;
                     case SchematronConstants.ASSERT_TAG_NAME:
-                        this.addAssertToRule(getAttributeValue(startElement, "test"));
+                        this.addAssertToRule(
+                            getAttributeValue(startElement, "test"),
+                            getAttributeValue(startElement, "role")
+                        );
                         break;
                     case SchematronConstants.LET_TAG_NAME:
                         this.addVariableToRule(
@@ -294,18 +297,23 @@ public class SchematronixValidator {
      * Adds an assertion to the current validation rule.
      *
      * @param test The assertion test as an XPath expression.
+     * @param role The assertion role.
      * @throws SaxonApiException            if an error is encountered when compiling an XPath expression.
      * @throws SchematronixParsingException if the assert appears outside a rule or is missing its {@code test}.
      */
-    private void addAssertToRule(final String test) throws SaxonApiException, SchematronixParsingException {
+    private void addAssertToRule(final String test,
+                                 String role) throws SaxonApiException, SchematronixParsingException {
         if (this.currentRule == null) {
             throw new SchematronixParsingException("An 'assert' element appears outside a 'rule' element");
         }
         if (test == null) {
             throw new SchematronixParsingException("An 'assert' element is missing its 'test' attribute");
         }
+        if (role == null) {
+            role = "";
+        }
 
-        this.currentRule.addAssert(test);
+        this.currentRule.addAssert(test, role);
     }
 
     /**

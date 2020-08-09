@@ -107,6 +107,7 @@ public class SchematronixWriter {
                         final Element assertElement =
                             document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.ASSERT_TAG_NAME);
                         assertElement.setAttribute("test", ((SchematronAssert) child).getTest());
+                        assertElement.setAttribute("role", ((SchematronAssert) child).getRole().getName());
                         ruleElement.appendChild(assertElement);
                     } else if (child instanceof SchematronLet) {
                         final Element letElement =

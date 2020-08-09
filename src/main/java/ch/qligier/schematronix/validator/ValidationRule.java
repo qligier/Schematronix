@@ -106,12 +106,15 @@ class ValidationRule {
      * Defines a new assert in the rule.
      *
      * @param assertXpathExpression The assert XPath expression.
+     * @param assertRole            The assert role.
      * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
      */
-    void addAssert(@NonNull final String assertXpathExpression) throws SaxonApiException {
+    void addAssert(@NonNull final String assertXpathExpression,
+                   @NonNull final String assertRole) throws SaxonApiException {
         final Assert anAssert = new Assert();
         anAssert.setNbVariables(this.definedVariableNames.size());
         anAssert.setXpath(assertXpathExpression);
+        anAssert.setRole(assertRole);
         anAssert.setExecutable(this.xpathCompiler.compile(assertXpathExpression));
         this.children.add(anAssert);
     }
@@ -179,7 +182,8 @@ class ValidationRule {
                 if (!selector.effectiveBooleanValue()) {
                     final Assert failedAssert = (Assert) child;
                     report.getMessages().add(String.format(
-                        "[%s][%s] Failed assert '%s' for node %s in context '%s'",
+                        "[role:%s][id:%s][pattern:%s] Failed assert '%s' for node %s in context '%s'",
+                        failedAssert.getRole(),
                         this.id,
                         this.pattern,
                         failedAssert.getXpath(),
@@ -255,5 +259,11 @@ class ValidationRule {
          */
         @NonNull
         private String xpath;
+
+        /**
+         * The assert role.
+         */
+        @NonNull
+        private String role;
     }
 }

@@ -39,18 +39,19 @@ class SchematronixValidatorSample1Test {
         assertEquals(6, report.getMessages().size());
 
         final List<String> expectedMessages = List.of(
-            "[rule1][pattern1] Failed assert '@attr1' for node <book/> in context '//book'",
-            "[rule1][pattern1] Failed assert '@attr1' for node <book/> in context '//book'",
-            "[rule1][pattern1] Failed assert '@attr2' for node <book/> in context '//book'",
-            "[rule4][pattern2] Failed assert '@attr1' for node <book/> in context '//*[@id]'",
-            "[rule4][pattern2] Failed assert '@attr1' for node <book/> in context '//*[@id]'",
-            "[rule4][pattern2] Failed assert '@attr2' for node <book/> in context '//*[@id]'"
+            "[role:error][id:rule1][pattern:pattern1] Failed assert '@attr1' for node <book/> in context '//book'",
+            "[role:error][id:rule1][pattern:pattern1] Failed assert '@attr1' for node <book/> in context '//book'",
+            "[role:error][id:rule1][pattern:pattern1] Failed assert '@attr2' for node <book/> in context '//book'",
+            "[role:error][id:rule4][pattern:pattern2] Failed assert '@attr1' for node <book/> in context '//*[@id]'",
+            "[role:error][id:rule4][pattern:pattern2] Failed assert '@attr1' for node <book/> in context '//*[@id]'",
+            "[role:error][id:rule4][pattern:pattern2] Failed assert '@attr2' for node <book/> in context '//*[@id]'"
         );
         assertEquals(expectedMessages, report.getMessages());
 
         report = validator.validate(true);
         assertFalse(report.isValid());
         assertEquals(1, report.getMessages().size());
-        assertEquals("[rule1][pattern1] Failed assert '@attr1' for node <book/> in context '//book'", report.getMessages().get(0));
+        assertEquals("[role:error][id:rule1][pattern:pattern1] Failed assert '@attr1' for node <book/> in context '//book'",
+            report.getFailedAsserts().get(0));
     }
 }
