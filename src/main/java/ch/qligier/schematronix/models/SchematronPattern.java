@@ -1,7 +1,6 @@
 package ch.qligier.schematronix.models;
 
 import ch.qligier.schematronix.exceptions.SchematronParsingException;
-import ch.qligier.schematronix.schematron.SchematronConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

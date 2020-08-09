@@ -1,6 +1,7 @@
-package ch.qligier.schematronix.schematron;
+package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.exceptions.SchematronParsingException;
+import ch.qligier.schematronix.models.SchematronConstants;
 import ch.qligier.schematronix.models.SchematronDefinition;
 import ch.qligier.schematronix.models.SchematronPattern;
 import ch.qligier.schematronix.models.SchematronRule;
@@ -30,7 +31,7 @@ import java.util.UUID;
  * @author Quentin Ligier
  */
 @Log
-public class DefinitionParser {
+public class SchematronParser {
 
     /**
      * The {@link Document} builder.
@@ -42,7 +43,7 @@ public class DefinitionParser {
      *
      * @throws ParserConfigurationException if a DocumentBuilder cannot be created which satisfies the configuration requested.
      */
-    public DefinitionParser() throws ParserConfigurationException {
+    public SchematronParser() throws ParserConfigurationException {
         this.documentBuilder = newSafeDocumentBuilder();
     }
 

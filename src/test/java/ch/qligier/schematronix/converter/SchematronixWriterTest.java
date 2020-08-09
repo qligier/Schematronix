@@ -1,7 +1,8 @@
 package ch.qligier.schematronix.converter;
 
+import ch.qligier.schematronix.SchematronixWriter;
 import ch.qligier.schematronix.models.SchematronDefinition;
-import ch.qligier.schematronix.schematron.DefinitionParser;
+import ch.qligier.schematronix.SchematronParser;
 import lombok.NonNull;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -25,12 +26,12 @@ class SchematronixWriterTest {
     private final ClassLoader classLoader = getClass().getClassLoader();
     private final static String RES_DIR = "schematronix/converter/";
 
-    private final DefinitionParser definitionParser;
+    private final SchematronParser schematronParser;
     private final SchematronixWriter schematronixWriter;
     private final DocumentBuilder documentBuilder;
 
     SchematronixWriterTest() throws ParserConfigurationException, TransformerConfigurationException {
-        this.definitionParser = new DefinitionParser();
+        this.schematronParser = new SchematronParser();
         this.schematronixWriter = new SchematronixWriter();
 
         final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
@@ -40,7 +41,7 @@ class SchematronixWriterTest {
     @Test
     void testSample1() throws Exception {
         final File definitionFile = loadResource("schematron1.sch");
-        final SchematronDefinition definition = this.definitionParser.parse(definitionFile);
+        final SchematronDefinition definition = this.schematronParser.parse(definitionFile);
 
         final File tempFile = File.createTempFile("schematronix_", ".xml");
         this.schematronixWriter.writeSchematronix(definition, tempFile);
@@ -62,7 +63,7 @@ class SchematronixWriterTest {
     @Test
     void testSample2() throws Exception {
         final File definitionFile = loadResource("schematron2.sch");
-        final SchematronDefinition definition = this.definitionParser.parse(definitionFile);
+        final SchematronDefinition definition = this.schematronParser.parse(definitionFile);
 
         final File tempFile = File.createTempFile("schematronix_", ".xml");
         this.schematronixWriter.writeSchematronix(definition, tempFile);
@@ -84,7 +85,7 @@ class SchematronixWriterTest {
     @Test
     void testSample3() throws Exception {
         final File definitionFile = loadResource("schematron3.sch");
-        final SchematronDefinition definition = this.definitionParser.parse(definitionFile);
+        final SchematronDefinition definition = this.schematronParser.parse(definitionFile);
 
         final File tempFile = File.createTempFile("schematronix_", ".xml");
         this.schematronixWriter.writeSchematronix(definition, tempFile);

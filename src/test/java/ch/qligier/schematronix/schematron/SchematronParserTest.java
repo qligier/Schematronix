@@ -1,5 +1,6 @@
 package ch.qligier.schematronix.schematron;
 
+import ch.qligier.schematronix.SchematronParser;
 import ch.qligier.schematronix.models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,11 +11,11 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * The test bed for {@link DefinitionParser}.
+ * The test bed for {@link SchematronParser}.
  *
  * @author Quentin Ligier
  */
-class DefinitionParserTest {
+class SchematronParserTest {
 
     @Test
     @DisplayName("Simple parsing test")
@@ -23,7 +24,7 @@ class DefinitionParserTest {
         final File definitionFile =
             new File(Objects.requireNonNull(classLoader.getResource("schematron/parsing_tests/simple/main.sch")).getFile());
 
-        final DefinitionParser parser = new DefinitionParser();
+        final SchematronParser parser = new SchematronParser();
         final SchematronDefinition definition = parser.parse(definitionFile);
 
         assertNotNull(definition);
