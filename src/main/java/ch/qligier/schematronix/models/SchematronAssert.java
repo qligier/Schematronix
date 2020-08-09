@@ -24,9 +24,9 @@ import java.util.List;
 public class SchematronAssert extends SchematronRuleChild implements Cloneable {
 
     /**
-     * The assert's role.
+     * The assert role, or {@code null} if it's not specified.
      */
-    private SchematronAssertRole role;
+    private String role;
 
     /**
      * The assert's test as an XPath expression.
@@ -67,11 +67,11 @@ public class SchematronAssert extends SchematronRuleChild implements Cloneable {
             throw new SchematronParsingException("Missing attribute 'test' in 'assert' element");
         }
 
-        final SchematronAssertRole role;
+        final String role;
         if (assertElement.hasAttribute("role")) {
-            role = SchematronAssertRole.getByValue(assertElement.getAttribute("role"));
+            role = assertElement.getAttribute("role");
         } else {
-            role = SchematronAssertRole.ERROR;
+            role = null;
         }
 
         final List<Node> messageNodes = new ArrayList<>();

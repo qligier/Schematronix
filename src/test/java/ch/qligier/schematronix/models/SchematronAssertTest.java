@@ -24,20 +24,20 @@ class SchematronAssertTest {
     @Test
     @DisplayName("Is a data object")
     void testIsADataObject() {
-        final SchematronAssert schematronAssert = new SchematronAssert(SchematronAssertRole.WARN, "II", "see", new ArrayList<>());
-        final SchematronAssert schematronAssert2 = new SchematronAssert(SchematronAssertRole.FATAL, "AA", null, null);
+        final SchematronAssert schematronAssert = new SchematronAssert("warn", "II", "see", new ArrayList<>());
+        final SchematronAssert schematronAssert2 = new SchematronAssert("fatal", "AA", null, null);
         assertTrue(schematronAssert.canEqual(schematronAssert2));
 
         assertNotNull(schematronAssert);
         assertNotNull(schematronAssert2);
-        assertEquals(SchematronAssertRole.WARN, schematronAssert.getRole());
+        assertEquals("warn", schematronAssert.getRole());
         assertEquals("II", schematronAssert.getTest());
         assertEquals("see", schematronAssert.getSee());
         assertEquals(0, schematronAssert.getMessageNodes().size());
         assertNotEquals(schematronAssert, schematronAssert2);
 
-        schematronAssert.setRole(SchematronAssertRole.FATAL);
-        assertEquals(SchematronAssertRole.FATAL, schematronAssert.getRole());
+        schematronAssert.setRole("fatal");
+        assertEquals("fatal", schematronAssert.getRole());
         schematronAssert.setTest("AA");
         assertEquals("AA", schematronAssert.getTest());
         schematronAssert.setSee(null);
@@ -63,7 +63,7 @@ class SchematronAssertTest {
             .getDocumentElement();
         final SchematronAssert schematronAssert = SchematronAssert.fromAssertElement(assertElement);
         assertNotNull(schematronAssert);
-        assertEquals(SchematronAssertRole.WARN, schematronAssert.getRole());
+        assertEquals("warning", schematronAssert.getRole());
         assertEquals("II", schematronAssert.getTest());
         assertEquals("http", schematronAssert.getSee());
         assertEquals(2, schematronAssert.getMessageNodes().size());
