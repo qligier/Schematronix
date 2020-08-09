@@ -1,5 +1,6 @@
 package ch.qligier.schematronix.validator;
 
+import ch.qligier.schematronix.SchematronixValidator;
 import ch.qligier.schematronix.exceptions.SchematronixParsingException;
 import net.sf.saxon.s9api.SaxonApiException;
 import org.junit.jupiter.api.Test;

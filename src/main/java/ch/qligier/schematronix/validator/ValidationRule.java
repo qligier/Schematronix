@@ -16,7 +16,7 @@ import java.util.*;
  * @author Quentin Ligier
  */
 @Data
-class ValidationRule {
+public class ValidationRule {
 
     /**
      * The ordered list of children (asserts, reports and variables) that make this validation rule.
@@ -68,11 +68,11 @@ class ValidationRule {
      * @param schematronixDirectoryPath The path of the Schematronix file parent directory or {@code null} if it's not needed.
      * @param patternAssertedNodes      The list of hashes of nodes that have already been asserted in this pattern.
      */
-    ValidationRule(@NonNull final Processor processor,
-                   @NonNull final Map<String, String> namespaces,
-                   @NonNull final XdmValue contextItems,
-                   final URI schematronixDirectoryPath,
-                   @NonNull final List<Integer> patternAssertedNodes) {
+    public ValidationRule(@NonNull final Processor processor,
+                          @NonNull final Map<String, String> namespaces,
+                          @NonNull final XdmValue contextItems,
+                          final URI schematronixDirectoryPath,
+                          @NonNull final List<Integer> patternAssertedNodes) {
         this.contextItems = contextItems;
         this.patternAssertedNodes = patternAssertedNodes;
         this.xpathCompiler = processor.newXPathCompiler();
@@ -91,8 +91,8 @@ class ValidationRule {
      * @param variableXpathExpression The variable value, as an XPath expression.
      * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
      */
-    void addVariable(@NonNull final String variableName,
-                     @NonNull final String variableXpathExpression) throws SaxonApiException {
+    public void addVariable(@NonNull final String variableName,
+                            @NonNull final String variableXpathExpression) throws SaxonApiException {
         final Variable variable = new Variable();
         variable.setNbVariables(this.definedVariableNames.size());
         variable.setName(variableName);
@@ -109,8 +109,8 @@ class ValidationRule {
      * @param assertRole            The assert role.
      * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
      */
-    void addAssert(@NonNull final String assertXpathExpression,
-                   @NonNull final String assertRole) throws SaxonApiException {
+    public void addAssert(@NonNull final String assertXpathExpression,
+                          @NonNull final String assertRole) throws SaxonApiException {
         final Assert anAssert = new Assert();
         anAssert.setNbVariables(this.definedVariableNames.size());
         anAssert.setXpath(assertXpathExpression);
@@ -126,8 +126,8 @@ class ValidationRule {
      * @param reportRole            The report's role.
      * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
      */
-    void addReport(@NonNull final String reportXpathExpression,
-                   @NonNull final String reportRole) throws SaxonApiException {
+    public void addReport(@NonNull final String reportXpathExpression,
+                          @NonNull final String reportRole) throws SaxonApiException {
         final Report report = new Report();
         report.setNbVariables(this.definedVariableNames.size());
         report.setXpath(reportXpathExpression);
@@ -145,8 +145,8 @@ class ValidationRule {
      * @throws SaxonApiException               if the execution of an XPath expression fails.
      * @throws SchematronixValidationException if the validation has been stopped at the first error.
      */
-    void execute(@NonNull final ValidationReport report,
-                 final boolean failFast) throws SaxonApiException, SchematronixValidationException {
+    public void execute(@NonNull final ValidationReport report,
+                        final boolean failFast) throws SaxonApiException, SchematronixValidationException {
         for (final XdmItem contextNode : this.contextItems) {
             final int nodeHash = contextNode.hashCode();
 
