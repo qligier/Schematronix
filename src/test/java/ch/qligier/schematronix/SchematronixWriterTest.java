@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.converter;
+package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.SchematronixWriter;
 import ch.qligier.schematronix.definition.SchematronDefinition;

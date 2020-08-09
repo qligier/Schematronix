@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.schematron;
+package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.SchematronParser;
 import ch.qligier.schematronix.definition.*;
