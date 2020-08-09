@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * The reference Schematron validation report 'target1.html' is generated with the script 'validate_schematron.bat'.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 class SchematronixValidatorSample1Test {
 

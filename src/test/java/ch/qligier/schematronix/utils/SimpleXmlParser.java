@@ -15,7 +15,6 @@ import java.io.StringReader;
  * A simple, insecure XML parser for tests only.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 public class SimpleXmlParser {
 

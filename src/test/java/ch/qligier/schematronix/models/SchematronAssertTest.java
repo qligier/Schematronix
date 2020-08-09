@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * The test bed for {@link SchematronAssert}.
  *
  * @author Quentin Ligier
- * @version 0.1.0
  */
 class SchematronAssertTest {
 
