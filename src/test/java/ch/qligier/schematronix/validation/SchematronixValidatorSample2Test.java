@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.validator;
+package ch.qligier.schematronix.validation;
 
 import ch.qligier.schematronix.SchematronixValidator;
 import ch.qligier.schematronix.exceptions.SchematronixParsingException;

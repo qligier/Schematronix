@@ -1,10 +1,10 @@
 package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.exceptions.SchematronParsingException;
-import ch.qligier.schematronix.models.SchematronConstants;
-import ch.qligier.schematronix.models.SchematronDefinition;
-import ch.qligier.schematronix.models.SchematronPattern;
-import ch.qligier.schematronix.models.SchematronRule;
+import ch.qligier.schematronix.definition.SchematronConstants;
+import ch.qligier.schematronix.definition.SchematronDefinition;
+import ch.qligier.schematronix.definition.SchematronPattern;
+import ch.qligier.schematronix.definition.SchematronRule;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.w3c.dom.Document;

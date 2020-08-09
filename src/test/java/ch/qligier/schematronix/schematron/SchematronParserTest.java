@@ -1,7 +1,7 @@
 package ch.qligier.schematronix.schematron;
 
 import ch.qligier.schematronix.SchematronParser;
-import ch.qligier.schematronix.models.*;
+import ch.qligier.schematronix.definition.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

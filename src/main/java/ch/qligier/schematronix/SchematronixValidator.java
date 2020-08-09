@@ -2,9 +2,9 @@ package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.exceptions.SchematronixParsingException;
 import ch.qligier.schematronix.exceptions.SchematronixValidationException;
-import ch.qligier.schematronix.models.SchematronConstants;
-import ch.qligier.schematronix.validator.ValidationReport;
-import ch.qligier.schematronix.validator.ValidationRule;
+import ch.qligier.schematronix.definition.SchematronConstants;
+import ch.qligier.schematronix.validation.ValidationReport;
+import ch.qligier.schematronix.validation.ValidationRule;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import net.sf.saxon.lib.Feature;

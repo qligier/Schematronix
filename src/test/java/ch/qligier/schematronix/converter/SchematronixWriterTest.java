@@ -1,7 +1,7 @@
 package ch.qligier.schematronix.converter;
 
 import ch.qligier.schematronix.SchematronixWriter;
-import ch.qligier.schematronix.models.SchematronDefinition;
+import ch.qligier.schematronix.definition.SchematronDefinition;
 import ch.qligier.schematronix.SchematronParser;
 import lombok.NonNull;
 import org.junit.jupiter.api.Test;

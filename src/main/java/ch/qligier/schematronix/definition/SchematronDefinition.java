@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.models;
+package ch.qligier.schematronix.definition;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

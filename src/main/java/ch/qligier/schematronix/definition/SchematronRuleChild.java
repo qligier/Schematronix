@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.models;
+package ch.qligier.schematronix.definition;
 
 /**
  * An abstract class that represents a child of a Schematron rule.

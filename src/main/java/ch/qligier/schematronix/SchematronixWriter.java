@@ -1,7 +1,7 @@
 package ch.qligier.schematronix;
 
-import ch.qligier.schematronix.models.*;
-import ch.qligier.schematronix.models.SchematronConstants;
+import ch.qligier.schematronix.definition.*;
+import ch.qligier.schematronix.definition.SchematronConstants;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import lombok.NonNull;

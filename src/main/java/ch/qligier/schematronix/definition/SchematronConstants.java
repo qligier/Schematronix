@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.models;
+package ch.qligier.schematronix.definition;
 
 import lombok.experimental.UtilityClass;
 

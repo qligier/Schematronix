@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.validator;
+package ch.qligier.schematronix.validation;
 
 import lombok.Data;
 import lombok.NonNull;

@@ -1,4 +1,4 @@
-package ch.qligier.schematronix.validator;
+package ch.qligier.schematronix.validation;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
