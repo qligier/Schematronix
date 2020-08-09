@@ -69,12 +69,13 @@ class SchematronixWriterTest {
         final Document doc = this.documentBuilder.parse(tempFile);
         tempFile.delete();
 
-        assertEquals(4, doc.getElementsByTagName("pattern").getLength());
-        assertEquals(4, doc.getElementsByTagName("rule").getLength());
+        assertEquals(5, doc.getElementsByTagName("pattern").getLength());
+        assertEquals(5, doc.getElementsByTagName("rule").getLength());
         assertEquals("p1", getNthElementByTagName(doc, "pattern", 0).getAttribute("id"));
         assertEquals("p2", getNthElementByTagName(doc, "pattern", 1).getAttribute("id"));
         assertEquals("p3", getNthElementByTagName(doc, "pattern", 2).getAttribute("id"));
         assertEquals("p4", getNthElementByTagName(doc, "pattern", 3).getAttribute("id"));
+        assertEquals("p6", getNthElementByTagName(doc, "pattern", 4).getAttribute("id"));
     }
 
     /**
@@ -103,7 +104,7 @@ class SchematronixWriterTest {
         assertEquals("rule3", getNthElementByTagName(doc, "rule", 0).getAttribute("id"));
 
         final NodeList ruleChildren = doc.getElementsByTagName("rule").item(0).getChildNodes();
-        assertEquals(11, ruleChildren.getLength());
+        assertEquals(13, ruleChildren.getLength());
         assertEquals("assert", ruleChildren.item(1).getNodeName());
         assertEquals("test1.1", ruleChildren.item(1).getAttributes().getNamedItem("test").getNodeValue());
         assertEquals("assert", ruleChildren.item(3).getNodeName());
@@ -113,8 +114,10 @@ class SchematronixWriterTest {
         assertEquals("'Variable 2.2'", ruleChildren.item(5).getAttributes().getNamedItem("value").getNodeValue());
         assertEquals("assert", ruleChildren.item(7).getNodeName());
         assertEquals("test2.3", ruleChildren.item(7).getAttributes().getNamedItem("test").getNodeValue());
-        assertEquals("assert", ruleChildren.item(9).getNodeName());
-        assertEquals("test3.1", ruleChildren.item(9).getAttributes().getNamedItem("test").getNodeValue());
+        assertEquals("report", ruleChildren.item(9).getNodeName());
+        assertEquals("test2.4", ruleChildren.item(9).getAttributes().getNamedItem("test").getNodeValue());
+        assertEquals("assert", ruleChildren.item(11).getNodeName());
+        assertEquals("test3.1", ruleChildren.item(11).getAttributes().getNamedItem("test").getNodeValue());
     }
 
     private File loadResource(@NonNull final String resourceName) {

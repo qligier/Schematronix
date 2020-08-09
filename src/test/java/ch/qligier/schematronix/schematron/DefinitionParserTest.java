@@ -1,9 +1,6 @@
 package ch.qligier.schematronix.schematron;
 
-import ch.qligier.schematronix.models.SchematronAssert;
-import ch.qligier.schematronix.models.SchematronDefinition;
-import ch.qligier.schematronix.models.SchematronLet;
-import ch.qligier.schematronix.models.SchematronRule;
+import ch.qligier.schematronix.models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -59,13 +56,13 @@ class DefinitionParserTest {
         assertEquals("rule3", rule3.getId());
         assertEquals("/", rule3.getContext());
         assertFalse(rule3.isAbstract());
-        assertEquals(5, rule3.getChildren().size());
+        assertEquals(6, rule3.getChildren().size());
         assertEquals("test1.1", ((SchematronAssert)rule3.getChildren().get(0)).getTest());
         assertEquals("test2.1", ((SchematronAssert)rule3.getChildren().get(1)).getTest());
         assertEquals("var2.2", ((SchematronLet)rule3.getChildren().get(2)).getName());
         assertEquals("test2.3", ((SchematronAssert)rule3.getChildren().get(3)).getTest());
-        // TODO: missing report here
-        assertEquals("test3.1", ((SchematronAssert)rule3.getChildren().get(4)).getTest());
+        assertEquals("test2.4", ((SchematronReport)rule3.getChildren().get(4)).getTest());
+        assertEquals("test3.1", ((SchematronAssert)rule3.getChildren().get(5)).getTest());
     }
 
 }

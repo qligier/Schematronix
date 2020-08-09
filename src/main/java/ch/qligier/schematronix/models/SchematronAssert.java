@@ -34,7 +34,7 @@ public class SchematronAssert extends SchematronRuleChild implements Cloneable {
     private String test;
 
     /**
-     *
+     * The URI [IRI] of external information of interest to maintainers and users of the schema.
      */
     private String see;
 

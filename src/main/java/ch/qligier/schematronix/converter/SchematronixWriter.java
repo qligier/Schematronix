@@ -109,6 +109,12 @@ public class SchematronixWriter {
                         assertElement.setAttribute("test", ((SchematronAssert) child).getTest());
                         assertElement.setAttribute("role", ((SchematronAssert) child).getRole());
                         ruleElement.appendChild(assertElement);
+                    } else if (child instanceof SchematronReport) {
+                        final Element reportElement =
+                            document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.REPORT_TAG_NAME);
+                        reportElement.setAttribute("test", ((SchematronReport) child).getTest());
+                        reportElement.setAttribute("role", ((SchematronReport) child).getRole());
+                        ruleElement.appendChild(reportElement);
                     } else if (child instanceof SchematronLet) {
                         final Element letElement =
                             document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.LET_TAG_NAME);

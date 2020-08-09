@@ -46,7 +46,7 @@ public class SchematronRule implements Cloneable {
     private String context;
 
     /**
-     * The list of the rule children (assertions, extends, variables). The order in which the children are defined is kept.
+     * The list of the rule children (assertions, reports, extends, variables). The order in which the children are defined is kept.
      */
     @NonNull
     private List<SchematronRuleChild> children = new ArrayList<>();
@@ -126,6 +126,9 @@ public class SchematronRule implements Cloneable {
                     break;
                 case SchematronConstants.ASSERT_TAG_NAME:
                     children.add(SchematronAssert.fromAssertElement(element));
+                    break;
+                case SchematronConstants.REPORT_TAG_NAME:
+                    children.add(SchematronReport.fromReportElement(element));
                     break;
                 default:
                     break;

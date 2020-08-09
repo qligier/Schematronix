@@ -21,7 +21,7 @@ class ValidationReportTest {
     void testEmptyConstructor() {
         final ValidationReport report = new ValidationReport();
         assertTrue(report.isValid());
-        assertEquals(0, report.getMessages().size());
+        assertEquals(0, report.getFailedAsserts().size());
     }
 
     /**
@@ -32,6 +32,6 @@ class ValidationReportTest {
     void testQuickConstructor() {
         final ValidationReport report = new ValidationReport("Something was wrong");
         assertFalse(report.isValid());
-        assertEquals(1, report.getMessages().size());
+        assertEquals(1, report.getFailedAsserts().size());
     }
 }

@@ -19,7 +19,7 @@ import java.util.*;
 class ValidationRule {
 
     /**
-     * The ordered list of children (asserts and variables) that make this validation rule.
+     * The ordered list of children (asserts, reports and variables) that make this validation rule.
      */
     private final List<Child> children = new ArrayList<>();
 
@@ -120,6 +120,23 @@ class ValidationRule {
     }
 
     /**
+     * Defines a new report in the rule.
+     *
+     * @param reportXpathExpression The report's XPath expression.
+     * @param reportRole            The report's role.
+     * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
+     */
+    void addReport(@NonNull final String reportXpathExpression,
+                   @NonNull final String reportRole) throws SaxonApiException {
+        final Report report = new Report();
+        report.setNbVariables(this.definedVariableNames.size());
+        report.setXpath(reportXpathExpression);
+        report.setRole(reportRole);
+        report.setExecutable(this.xpathCompiler.compile(reportXpathExpression));
+        this.children.add(report);
+    }
+
+    /**
      * Executes the validation rule and stores the results in the report. If failFast is set, the validation stops at the first error.
      *
      * @param report   The report that will be updated with the rule validation results.
@@ -177,11 +194,11 @@ class ValidationRule {
 
             if (child instanceof Variable) {
                 variables.put(((Variable) child).getName(), selector.evaluate());
-            } else {
+            } else if (child instanceof Assert) {
                 // If the assert selector doesn't evaluate to 'true', it has failed
                 if (!selector.effectiveBooleanValue()) {
                     final Assert failedAssert = (Assert) child;
-                    report.getMessages().add(String.format(
+                    report.getFailedAsserts().add(String.format(
                         "[role:%s][id:%s][pattern:%s] Failed assert '%s' for node %s in context '%s'",
                         failedAssert.getRole(),
                         this.id,
@@ -193,6 +210,20 @@ class ValidationRule {
                     if (failFast) {
                         throw new SchematronixValidationException("Failed validation, stopping");
                     }
+                }
+            } else {
+                // If the report selector evaluates to 'true', it has succeeded
+                if (!selector.effectiveBooleanValue()) {
+                    final Report successfulReport = (Report) child;
+                    report.getSuccessfulReports().add(String.format(
+                        "[role:%s][id:%s][pattern:%s] Successful report '%s' for node %s in context '%s'",
+                        successfulReport.getRole(),
+                        this.id,
+                        this.pattern,
+                        successfulReport.getXpath(),
+                        ((XdmNode) contextItem).getUnderlyingValue().toShortString(),
+                        this.contextXpathExpression
+                    ));
                 }
             }
         }
@@ -261,7 +292,28 @@ class ValidationRule {
         private String xpath;
 
         /**
-         * The assert role.
+         * The assert's role.
+         */
+        @NonNull
+        private String role;
+    }
+
+    /**
+     * A report.
+     */
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    @NoArgsConstructor
+    private static final class Report extends Child {
+
+        /**
+         * The XPath expression as a string, stored for the failure message generation.
+         */
+        @NonNull
+        private String xpath;
+
+        /**
+         * The report's role.
          */
         @NonNull
         private String role;

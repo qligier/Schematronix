@@ -179,6 +179,12 @@ public class SchematronixValidator {
                             getAttributeValue(startElement, "role")
                         );
                         break;
+                    case SchematronConstants.REPORT_TAG_NAME:
+                        this.addReportToRule(
+                            getAttributeValue(startElement, "test"),
+                            getAttributeValue(startElement, "role")
+                        );
+                        break;
                     case SchematronConstants.LET_TAG_NAME:
                         this.addVariableToRule(
                             getAttributeValue(startElement, "name"),
@@ -314,6 +320,29 @@ public class SchematronixValidator {
         }
 
         this.currentRule.addAssert(test, role);
+    }
+
+    /**
+     * Adds a report to the current validation rule.
+     *
+     * @param test The report's test as an XPath expression.
+     * @param role The report's role.
+     * @throws SaxonApiException            if an error is encountered when compiling an XPath expression.
+     * @throws SchematronixParsingException if the assert appears outside a rule or is missing its {@code test}.
+     */
+    private void addReportToRule(final String test,
+                                 String role) throws SaxonApiException, SchematronixParsingException {
+        if (this.currentRule == null) {
+            throw new SchematronixParsingException("A 'report' element appears outside a 'rule' element");
+        }
+        if (test == null) {
+            throw new SchematronixParsingException("A 'report' element is missing its 'test' attribute");
+        }
+        if (role == null) {
+            role = "";
+        }
+
+        this.currentRule.addReport(test, role);
     }
 
     /**
