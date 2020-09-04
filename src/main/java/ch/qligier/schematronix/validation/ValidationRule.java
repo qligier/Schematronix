@@ -199,13 +199,13 @@ public class ValidationRule {
                 if (!selector.effectiveBooleanValue()) {
                     final Assert failedAssert = (Assert) child;
                     report.getFailedAsserts().add(String.format(
-                        "[role:%s][id:%s][pattern:%s] Failed assert '%s' for node %s in context '%s'",
-                        failedAssert.getRole(),
-                        this.id,
-                        this.pattern,
+                        "Failed assert '%s' for node %s in context '%s' [role:%s][id:%s][pattern:%s]",
                         failedAssert.getXpath(),
                         ((XdmNode) contextItem).getUnderlyingValue().toShortString(),
-                        this.contextXpathExpression
+                        this.contextXpathExpression,
+                        failedAssert.getRole(),
+                        this.id,
+                        this.pattern
                     ));
                     if (failFast) {
                         throw new SchematronixValidationException("Failed validation, stopping");
@@ -216,13 +216,13 @@ public class ValidationRule {
                 if (!selector.effectiveBooleanValue()) {
                     final Report successfulReport = (Report) child;
                     report.getSuccessfulReports().add(String.format(
-                        "[role:%s][id:%s][pattern:%s] Successful report '%s' for node %s in context '%s'",
-                        successfulReport.getRole(),
-                        this.id,
-                        this.pattern,
+                        "Successful report '%s' for node %s in context '%s' [role:%s][id:%s][pattern:%s]",
                         successfulReport.getXpath(),
                         ((XdmNode) contextItem).getUnderlyingValue().toShortString(),
-                        this.contextXpathExpression
+                        this.contextXpathExpression,
+                        successfulReport.getRole(),
+                        this.id,
+                        this.pattern
                     ));
                 }
             }
