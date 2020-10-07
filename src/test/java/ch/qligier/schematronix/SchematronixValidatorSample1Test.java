@@ -1,6 +1,6 @@
 package ch.qligier.schematronix;
 
-import ch.qligier.schematronix.SchematronixValidator;
+import ch.qligier.schematronix.validation.TriggeredAssertion;
 import ch.qligier.schematronix.validation.ValidationReport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,21 +38,26 @@ class SchematronixValidatorSample1Test {
 
         assertFalse(report.isValid());
         assertEquals(6, report.getFailedAsserts().size());
+        assertEquals(
+            List.of(
+                new TriggeredAssertion("rule1", "pattern1", "error", "//book", "@attr1"),
+                new TriggeredAssertion("rule1", "pattern1", "error", "//book", "@attr1"),
+                new TriggeredAssertion("rule1", "pattern1", "error", "//book", "@attr2"),
+                new TriggeredAssertion("rule4", "pattern2", "error", "//*[@id]", "@attr1"),
+                new TriggeredAssertion("rule4", "pattern2", "error", "//*[@id]", "@attr1"),
+                new TriggeredAssertion("rule4", "pattern2", "error", "//*[@id]", "@attr2")
 
-        final List<String> expectedMessages = List.of(
-            "Failed assert '@attr1' for node <book/> in context '//book' [role:error][id:rule1][pattern:pattern1]",
-            "Failed assert '@attr1' for node <book/> in context '//book' [role:error][id:rule1][pattern:pattern1]",
-            "Failed assert '@attr2' for node <book/> in context '//book' [role:error][id:rule1][pattern:pattern1]",
-            "Failed assert '@attr1' for node <book/> in context '//*[@id]' [role:error][id:rule4][pattern:pattern2]",
-            "Failed assert '@attr1' for node <book/> in context '//*[@id]' [role:error][id:rule4][pattern:pattern2]",
-            "Failed assert '@attr2' for node <book/> in context '//*[@id]' [role:error][id:rule4][pattern:pattern2]"
+            ),
+            report.getFailedAsserts()
         );
-        assertEquals(expectedMessages, report.getFailedAsserts());
 
         report = validator.validate(true);
         assertFalse(report.isValid());
         assertEquals(1, report.getFailedAsserts().size());
-        assertEquals("Failed assert '@attr1' for node <book/> in context '//book' [role:error][id:rule1][pattern:pattern1]",
-            report.getFailedAsserts().get(0));
+        assertEquals("rule1", report.getFailedAsserts().get(0).getRuleId());
+        assertEquals("pattern1", report.getFailedAsserts().get(0).getPatternId());
+        assertEquals("@attr1", report.getFailedAsserts().get(0).getTest());
+        assertEquals("//book", report.getFailedAsserts().get(0).getRuleContext());
+        assertEquals("error", report.getFailedAsserts().get(0).getRole());
     }
 }

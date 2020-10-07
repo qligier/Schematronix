@@ -94,7 +94,7 @@ public class ValidationRule {
     public void addVariable(@NonNull final String variableName,
                             @NonNull final String variableXpathExpression) throws SaxonApiException {
         final Variable variable = new Variable();
-        variable.setNbVariables(this.definedVariableNames.size());
+        variable.setNbVariables(this.definedVariableNames.size()); // Store the number of variables that were defined before this variable
         variable.setName(variableName);
         variable.setExecutable(this.xpathCompiler.compile(variableXpathExpression));
         this.children.add(variable);
@@ -112,7 +112,7 @@ public class ValidationRule {
     public void addAssert(@NonNull final String assertXpathExpression,
                           @NonNull final String assertRole) throws SaxonApiException {
         final Assert anAssert = new Assert();
-        anAssert.setNbVariables(this.definedVariableNames.size());
+        anAssert.setNbVariables(this.definedVariableNames.size()); // Store the number of variables that were defined before this assert
         anAssert.setXpath(assertXpathExpression);
         anAssert.setRole(assertRole);
         anAssert.setExecutable(this.xpathCompiler.compile(assertXpathExpression));
@@ -129,7 +129,7 @@ public class ValidationRule {
     public void addReport(@NonNull final String reportXpathExpression,
                           @NonNull final String reportRole) throws SaxonApiException {
         final Report report = new Report();
-        report.setNbVariables(this.definedVariableNames.size());
+        report.setNbVariables(this.definedVariableNames.size()); // Store the number of variables that were defined before this report
         report.setXpath(reportXpathExpression);
         report.setRole(reportRole);
         report.setExecutable(this.xpathCompiler.compile(reportXpathExpression));
@@ -183,7 +183,7 @@ public class ValidationRule {
             final XPathSelector selector = child.getExecutable().load();
             selector.setContextItem(contextItem);
 
-            // Declare to the new XPath selector the variables that were defined before the child we are processing.
+            // Declare to the new XPath selector the variables that were defined before the child being processed.
             for (int i = 0; i < child.getNbVariables(); ++i) {
                 final String previousVariableName = this.definedVariableNames.get(i);
                 selector.setVariable(
@@ -193,36 +193,34 @@ public class ValidationRule {
             }
 
             if (child instanceof Variable) {
+                // The child is a variable declaration, we evaluate and store it
                 variables.put(((Variable) child).getName(), selector.evaluate());
             } else if (child instanceof Assert) {
                 // If the assert selector doesn't evaluate to 'true', it has failed
                 if (!selector.effectiveBooleanValue()) {
                     final Assert failedAssert = (Assert) child;
-                    report.getFailedAsserts().add(String.format(
-                        "Failed assert '%s' for node %s in context '%s' [role:%s][id:%s][pattern:%s]",
-                        failedAssert.getXpath(),
-                        ((XdmNode) contextItem).getUnderlyingValue().toShortString(),
-                        this.contextXpathExpression,
-                        failedAssert.getRole(),
+
+                    report.getFailedAsserts().add(new TriggeredAssertion(
                         this.id,
-                        this.pattern
+                        this.pattern,
+                        failedAssert.getRole(),
+                        this.contextXpathExpression,
+                        failedAssert.getXpath()
                     ));
                     if (failFast) {
-                        throw new SchematronixValidationException("Failed validation, stopping");
+                        throw new SchematronixValidationException("Failed validation, stopping early");
                     }
                 }
             } else {
                 // If the report selector evaluates to 'true', it has succeeded
                 if (!selector.effectiveBooleanValue()) {
                     final Report successfulReport = (Report) child;
-                    report.getSuccessfulReports().add(String.format(
-                        "Successful report '%s' for node %s in context '%s' [role:%s][id:%s][pattern:%s]",
-                        successfulReport.getXpath(),
-                        ((XdmNode) contextItem).getUnderlyingValue().toShortString(),
-                        this.contextXpathExpression,
-                        successfulReport.getRole(),
+                    report.getSuccessfulReports().add(new TriggeredAssertion(
                         this.id,
-                        this.pattern
+                        this.pattern,
+                        successfulReport.getRole(),
+                        this.contextXpathExpression,
+                        successfulReport.getXpath()
                     ));
                 }
             }

@@ -21,16 +21,29 @@ class ValidationReportTest {
         final ValidationReport report = new ValidationReport();
         assertTrue(report.isValid());
         assertEquals(0, report.getFailedAsserts().size());
+        assertEquals(0, report.getSuccessfulReports().size());
     }
 
     /**
-     * Ensures the quick constructor is working.
+     * Ensures the validity status is working.
      */
     @Test
-    @DisplayName("Quick constructor")
-    void testQuickConstructor() {
-        final ValidationReport report = new ValidationReport("Something was wrong");
+    @DisplayName("Validity status")
+    void testValidityStatus() {
+        ValidationReport report = new ValidationReport();
+        report.addFailedAssert(new TriggeredAssertion(
+            "ruleId", "patternId", "role", "ruleContext", "test"
+        ));
         assertFalse(report.isValid());
         assertEquals(1, report.getFailedAsserts().size());
+        assertEquals(0, report.getSuccessfulReports().size());
+
+        report = new ValidationReport();
+        report.addSuccessfulReport(new TriggeredAssertion(
+            "ruleId", "patternId", "role", "ruleContext", "test"
+        ));
+        assertTrue(report.isValid());
+        assertEquals(0, report.getFailedAsserts().size());
+        assertEquals(1, report.getSuccessfulReports().size());
     }
 }

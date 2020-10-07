@@ -17,12 +17,12 @@ public class ValidationReport {
     /**
      * The list of failed assert messages.
      */
-    private final List<String> failedAsserts = new ArrayList<>();
+    private final List<TriggeredAssertion> failedAsserts = new ArrayList<>();
 
     /**
      * The list of successful report messages.
      */
-    private final List<String> successfulReports = new ArrayList<>();
+    private final List<TriggeredAssertion> successfulReports = new ArrayList<>();
 
     /**
      * No args constructor.
@@ -31,12 +31,21 @@ public class ValidationReport {
     }
 
     /**
-     * Quick constructor for creating a report with a single failed assert message (e.g. when validating a document in fail fast mode).
+     * Adds a failed assert to the validation report.
      *
-     * @param failedAssert The failed assert message.
+     * @param failedAssert The failed assert to add.
      */
-    public ValidationReport(@NonNull final String failedAssert) {
+    public void addFailedAssert(@NonNull final TriggeredAssertion failedAssert) {
         this.failedAsserts.add(failedAssert);
+    }
+
+    /**
+     * Adds a successful report to the validation report.
+     *
+     * @param successfulReport The successful report to add.
+     */
+    public void addSuccessfulReport(@NonNull final TriggeredAssertion successfulReport) {
+        this.successfulReports.add(successfulReport);
     }
 
     /**
