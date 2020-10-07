@@ -5,26 +5,29 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ch.qligier/schematronix/badge.svg?style=flat)](https://search.maven.org/artifact/ch.qligier/schematronix)
 [![Latest release](https://img.shields.io/github/release/qligier/Schematronix.svg)](https://github.com/qligier/Schematronix/releases/latest)
 [![Known Vulnerabilities](https://snyk.io/test/github/qligier/Schematronix/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/qligier/Schematronix?targetFile=pom.xml)
-![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/github/qligier/Schematronix)
+[![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/github/qligier/Schematronix)](https://libraries.io/maven/ch.qligier:schematronix)
 
 A Schematron validator inspired by the pure version of [ph-schematron](https://github.com/phax/ph-schematron), improved to efficiently
  validate CDA-CH-EMED documents.
 
 The Schematronix library is made of the following parts:
 
-- A Schematron definition parser, transformer and writer that can output optimized Schematronix definitions.
-- A Schematronix validator that takes both the Schematronix definition and the file to validate (both are XML files).
+- A Schematron definition parser, transformer and writer that can generate optimized Schematronix definitions.
+- A Schematronix validator that takes both the Schematronix definition and the file to validate (both are XML files) and performs a
+ Schematron-compliant validation.
 
 The validator uses several tricks to optimize the validation duration and the memory footprint:
 
-- The expected Schematron file (Schematronix file) is optimized in a way that it is possible to execute it while reading it in a single
-pass, with a streaming API (StAX);
-- There are no SVRL (Schematron Validation Report Language) document generated as a validation output;
-- The validation can stop to the first encountered error, returning the failure status as early as possible.
+- The Schematronix file is optimized in a way that makes possible to execute the validation while reading it in a single pass, with a
+ streaming API (StAX);
+- There are no SVRL (Schematron Validation Report Language) document generated as a validation output but a single list of messages;
+- The validation can stop at the first encountered error, returning the failure status as early as possible.
 
 ## Development
 
 Schematronix was developed with the JDK11. Saxon is used as XQuery processor. 
+
+⚠ As per semantic versioning 2.0.0, until release of the 1.0.0 version, breaking changes can be introduced in minors or patches.
 
 ## Quick start
 
@@ -64,7 +67,7 @@ That's what the Schematronix tries to achieve. The optimized Schematron file (ca
 valid Schematron file) is made of the following optimizations (all these limitations are shared by the Schematronix writer and validator):
 
 - It does not support includes. This one helps a lot when reading the Schematron file, as the original CDA-CH-EMED Schematron files
- contain a lot of these (`cdachemed-MTP.sch` alone includes 204 other files).
+ contain a lot of these (`cdachemed-MTP.sch` alone includes 204 other files, that may also have includes).
 - It does not contain rules that extend other rules. All rules directly contain all their tests, no need for lookups. The resulting file
  size increases, but storage is cheap and reading it with a streaming API (e.g. StAX) is not harder. Abstract rules and patterns are
  thus not supported.
@@ -72,4 +75,4 @@ valid Schematron file) is made of the following optimizations (all these limitat
  phase.
  
 Even though they are supported by the validator, it is recommended to get rid of `reports` and non-error `asserts` if a validation report
- is not expected.
+ is not expected. If a full report is expected, it is recommended to use a slower, more stable Schematron validator.
