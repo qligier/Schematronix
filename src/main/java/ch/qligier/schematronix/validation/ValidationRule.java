@@ -140,13 +140,12 @@ public class ValidationRule {
      * Executes the validation rule and stores the results in the report. If failFast is set, the validation stops at the first error.
      *
      * @param report   The report that will be updated with the rule validation results.
-     * @param failFast if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is fully
-     *                 performed.
+     * @param configuration The validator configuration to use.
      * @throws SaxonApiException               if the execution of an XPath expression fails.
      * @throws SchematronixValidationException if the validation has been stopped at the first error.
      */
     public void execute(@NonNull final ValidationReport report,
-                        final boolean failFast) throws SaxonApiException, SchematronixValidationException {
+                        @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException {
         for (final XdmItem contextNode : this.contextItems) {
             final int nodeHash = contextNode.hashCode();
 
@@ -158,7 +157,7 @@ public class ValidationRule {
                 continue;
             }
             this.patternAssertedNodes.add(nodeHash);
-            this.executeSingle(contextNode, report, failFast);
+            this.executeSingle(contextNode, report, configuration);
         }
     }
 
@@ -167,14 +166,13 @@ public class ValidationRule {
      *
      * @param contextItem The context item on which to execute the validation rule.
      * @param report      The report that will be updated with the rule validation results.
-     * @param failFast    if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is
-     *                    fully performed.
+     * @param configuration The validator configuration to use.
      * @throws SaxonApiException               if an error arises during the XPath expression execution.
      * @throws SchematronixValidationException if the assert fails on the given value.
      */
     private void executeSingle(@NonNull final XdmItem contextItem,
                                @NonNull final ValidationReport report,
-                               final boolean failFast) throws SaxonApiException, SchematronixValidationException {
+                               @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException {
         // The list of variables and their evaluated value
         final Map<String, XdmValue> variables = new HashMap<>();
 
@@ -207,7 +205,7 @@ public class ValidationRule {
                         this.contextXpathExpression,
                         failedAssert.getXpath()
                     ));
-                    if (failFast) {
+                    if (configuration.isFailFast()) {
                         throw new SchematronixValidationException("Failed validation, stopping early");
                     }
                 }

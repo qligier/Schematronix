@@ -2,6 +2,7 @@ package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.validation.TriggeredAssertion;
 import ch.qligier.schematronix.validation.ValidationReport;
+import ch.qligier.schematronix.validation.ValidatorConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class SchematronixValidatorSample1Test {
         final File xmlFile = new File(Objects.requireNonNull(classLoader.getResource(RES_DIR + "target1.xml")).getFile());
 
         final SchematronixValidator validator = new SchematronixValidator(new StreamSource(xmlFile), definitionFile);
-        ValidationReport report = validator.validate(false);
+        ValidationReport report = validator.validate(ValidatorConfiguration.fullValidation());
 
         assertFalse(report.isValid());
         assertEquals(6, report.getFailedAsserts().size());
@@ -51,7 +52,7 @@ class SchematronixValidatorSample1Test {
             report.getFailedAsserts()
         );
 
-        report = validator.validate(true);
+        report = validator.validate(ValidatorConfiguration.fastValidation());
         assertFalse(report.isValid());
         assertEquals(1, report.getFailedAsserts().size());
         assertEquals("rule1", report.getFailedAsserts().get(0).getRuleId());

@@ -2,6 +2,7 @@ package ch.qligier.schematronix;
 
 import ch.qligier.schematronix.exceptions.SchematronixParsingException;
 import ch.qligier.schematronix.validation.ValidationReport;
+import ch.qligier.schematronix.validation.ValidatorConfiguration;
 import net.sf.saxon.s9api.SaxonApiException;
 import org.junit.jupiter.api.Test;
 
@@ -121,7 +122,7 @@ class SchematronixValidatorSample2Test {
             new StreamSource(new StringReader(xml)),
             new StreamSource(new StringReader(schematron))
         );
-        final ValidationReport report = validator.validate(false);
+        final ValidationReport report = validator.validate(ValidatorConfiguration.fullValidation());
         assertTrue(report.isValid());
     }
 
@@ -147,7 +148,7 @@ class SchematronixValidatorSample2Test {
             new StreamSource(new StringReader(xml)),
             new StreamSource(new StringReader(schematron))
         );
-        final ValidationReport report = validator.validate(false);
+        final ValidationReport report = validator.validate(ValidatorConfiguration.fullValidation());
         assertTrue(report.isValid());
     }
 
@@ -172,7 +173,7 @@ class SchematronixValidatorSample2Test {
             new StreamSource(new StringReader(xml)),
             new StreamSource(new StringReader(schematron))
         );
-        assertThrows(SchematronixParsingException.class, () -> validator.validate(false));
+        assertThrows(SchematronixParsingException.class, () -> validator.validate(ValidatorConfiguration.fullValidation()));
     }
 
     /**
@@ -196,7 +197,7 @@ class SchematronixValidatorSample2Test {
             new StreamSource(new StringReader(xml)),
             new StreamSource(new StringReader(schematron))
         );
-        assertThrows(SchematronixParsingException.class, () -> validator.validate(false));
+        assertThrows(SchematronixParsingException.class, () -> validator.validate(ValidatorConfiguration.fullValidation()));
     }
 
     /**
@@ -220,6 +221,6 @@ class SchematronixValidatorSample2Test {
             new StreamSource(new StringReader(xml)),
             new StreamSource(new StringReader(schematron))
         );
-        assertThrows(SchematronixParsingException.class, () -> validator.validate(false));
+        assertThrows(SchematronixParsingException.class, () -> validator.validate(ValidatorConfiguration.fullValidation()));
     }
 }

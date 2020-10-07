@@ -5,6 +5,7 @@ import ch.qligier.schematronix.exceptions.SchematronixValidationException;
 import ch.qligier.schematronix.definition.SchematronConstants;
 import ch.qligier.schematronix.validation.ValidationReport;
 import ch.qligier.schematronix.validation.ValidationRule;
+import ch.qligier.schematronix.validation.ValidatorConfiguration;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import net.sf.saxon.lib.Feature;
@@ -136,15 +137,14 @@ public class SchematronixValidator {
      * Validates the target file with the provided Schematronix definition and returns a report that contains the eventual validation
      * errors.
      *
-     * @param failFast if {@code true}, the validation is stopped at the first encountered error; if {@code false}, the validation is fully
-     *                 performed.
+     * @param configuration The validator configuration to use.
      * @return the validation report containing the error messages, if any.
      * @throws SaxonApiException            if there is an error while compiling/executing an XPath expression.
      * @throws SchematronixParsingException if there is an error with the Schematronix file.
      * @throws XMLStreamException           if StAX fails to create a reader for the Schematronix file.
      */
     @NonNull
-    public ValidationReport validate(final boolean failFast) throws SaxonApiException, SchematronixParsingException, XMLStreamException {
+    public ValidationReport validate(@NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixParsingException, XMLStreamException {
         final ValidationReport report = new ValidationReport();
         final XMLEventReader schematronixReader = this.schematronixReaderFactory.createXMLEventReader(this.schematronFileSource);
 
@@ -209,7 +209,7 @@ public class SchematronixValidator {
                         break;
                     case SchematronConstants.RULE_TAG_NAME:
                         try {
-                            this.currentRule.execute(report, failFast); //NOSONAR, the parser ensures that a rule was opened before that
+                            this.currentRule.execute(report, configuration); //NOSONAR, the parser ensures that a rule was opened before that
                         } catch (final SchematronixValidationException exception) {
                             // A SchematronixValidationException is thrown at the first error in fast failing mode
                             return report;
