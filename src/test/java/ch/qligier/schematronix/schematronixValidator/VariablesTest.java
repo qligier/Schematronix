@@ -1,6 +1,9 @@
-package ch.qligier.schematronix.validation;
+package ch.qligier.schematronix.schematronixValidator;
 
 import ch.qligier.schematronix.SchematronixValidator;
+import ch.qligier.schematronix.validation.TriggeredAssertion;
+import ch.qligier.schematronix.validation.ValidationReport;
+import ch.qligier.schematronix.validation.ValidatorConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,10 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
- * A test bed for {@link SchematronixValidator}. It uses the resources of the 'variables' folder.
- * <p>
- * The expected behavior is as follows: when an assertion is evaluated (true or false???) on a node, this node can still be evaluated by
- * latter assertions of the same rule but must be excluded from latter rules of the same pattern. A new pattern resets this exclude list.
+ * A test bed for variables support. It uses the resources of the 'variables' folder.
  * <p>
  * The reference Schematron validation report 'target.html' is generated with the script 'validate_schematron.bat'.
  *
@@ -27,7 +27,7 @@ public class VariablesTest {
     private final static String RES_DIR = "schematronix/validator/variables/";
 
     @Test
-    @DisplayName("Ensures that variables are correctly processed")
+    @DisplayName("Ensure that variables are correctly processed")
     void testVariables() throws Exception {
         final ClassLoader classLoader = getClass().getClassLoader();
         final File definitionFile = new File(Objects.requireNonNull(classLoader.getResource(RES_DIR + "schematronix.sch")).getFile());

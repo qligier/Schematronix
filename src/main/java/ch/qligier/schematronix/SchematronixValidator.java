@@ -400,7 +400,7 @@ public class SchematronixValidator {
     private void addVariableToRule(final String name,
                                    final String value) throws SaxonApiException, SchematronixParsingException {
         if (this.currentRule == null) {
-            throw new SchematronixParsingException("A 'let' element appears outside a 'rule' element.");
+            throw new SchematronixParsingException("A 'let' element appears outside a 'rule' element");
         }
         if (name == null) {
             throw new SchematronixParsingException("A 'let' element is missing its 'name' attribute");

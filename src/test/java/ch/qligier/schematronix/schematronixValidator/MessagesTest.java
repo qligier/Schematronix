@@ -1,7 +1,10 @@
-package ch.qligier.schematronix.validation;
+package ch.qligier.schematronix.schematronixValidator;
 
 import ch.qligier.schematronix.SchematronixValidator;
 import ch.qligier.schematronix.exceptions.SchematronixValidationException;
+import ch.qligier.schematronix.validation.TriggeredAssertion;
+import ch.qligier.schematronix.validation.ValidationReport;
+import ch.qligier.schematronix.validation.ValidatorConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * A test bed for {@link SchematronixValidator}. It uses the resources of the 'message' folder.
  * <p>
- * The expected behavior is as follows: when an assertion is evaluated (true or false???) on a node, this node can still be evaluated by
- * latter assertions of the same rule but must be excluded from latter rules of the same pattern. A new pattern resets this exclude list.
- * <p>
  * The reference Schematron validation report 'target.html' is generated with the script 'validate_schematron.bat'.
  *
  * @author Quentin Ligier
@@ -28,7 +28,7 @@ class MessagesTest {
     private final static String RES_DIR = "schematronix/validator/message/";
 
     @Test
-    @DisplayName("Ensures that messages are correctly processed")
+    @DisplayName("Ensure that messages are correctly processed")
     void testMessages() throws Exception {
         final ClassLoader classLoader = getClass().getClassLoader();
         final File definitionFile = new File(Objects.requireNonNull(classLoader.getResource(RES_DIR + "schematronix.sch")).getFile());
@@ -52,6 +52,7 @@ class MessagesTest {
     }
 
     @Test
+    @DisplayName("Ensure that 'value-of's selector yields at least one value")
     void testInvalidValueOfWithNoValue() throws Exception {
         final ClassLoader classLoader = getClass().getClassLoader();
         final File xmlFile = new File(Objects.requireNonNull(classLoader.getResource(RES_DIR + "target.xml")).getFile());
@@ -69,6 +70,7 @@ class MessagesTest {
     }
 
     @Test
+    @DisplayName("Ensure that 'value-of's selector yields at max one value")
     void testInvalidValueOfWithMultipleValues() throws Exception {
         final ClassLoader classLoader = getClass().getClassLoader();
         final File xmlFile = new File(Objects.requireNonNull(classLoader.getResource(RES_DIR + "target.xml")).getFile());

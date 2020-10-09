@@ -1,5 +1,6 @@
-package ch.qligier.schematronix;
+package ch.qligier.schematronix.schematronixValidator;
 
+import ch.qligier.schematronix.SchematronixValidator;
 import ch.qligier.schematronix.exceptions.SchematronixParsingException;
 import ch.qligier.schematronix.validation.ValidationReport;
 import ch.qligier.schematronix.validation.ValidatorConfiguration;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Quentin Ligier
  */
-class SchematronixValidatorSample2Test {
+class Sample2Test {
 
     private static final String URL_TO_FETCH = "https://api.ipify.org/";
     private static final String FILE_TO_FETCH;

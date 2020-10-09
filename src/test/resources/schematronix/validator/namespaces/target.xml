@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<library xmlns:book="urn:example:schematronix:book" xmlns:isbn="urn:example:schematronix:isbn">
+    <book:book isbn:isbn="9780575075344">
+        <title>Dawnthief</title>
+        <author>James Barclay</author>
+    </book:book>
+    <book:book isbn:isbn="9780553573398">
+        <title>Assassin's Apprentice</title>
+        <author>Robin Hobb</author>
+    </book:book>
+    <book:book isbn="9780980003437"> <!-- The isbn is not in the namespace 'isbn' -->
+        <title>The Crown Conspiracy</title>
+        <author>Michael J. Sullivan</author>
+    </book:book>
+    <book isbn:isbn="9780060541699"> <!-- The book is not in the namespace 'book' -->
+        <title>City of Pearl</title>
+        <author>Karen Traviss</author>
+    </book>
+</library>

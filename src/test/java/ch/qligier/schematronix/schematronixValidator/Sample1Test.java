@@ -1,5 +1,6 @@
-package ch.qligier.schematronix;
+package ch.qligier.schematronix.schematronixValidator;
 
+import ch.qligier.schematronix.SchematronixValidator;
 import ch.qligier.schematronix.validation.TriggeredAssertion;
 import ch.qligier.schematronix.validation.ValidationReport;
 import ch.qligier.schematronix.validation.ValidatorConfiguration;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Quentin Ligier
  */
-class SchematronixValidatorSample1Test {
+class Sample1Test {
 
     private final static String RES_DIR = "schematronix/validator/sample1/";
 
