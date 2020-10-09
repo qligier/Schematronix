@@ -41,12 +41,12 @@ class SchematronixValidatorSample1Test {
         assertEquals(6, report.getFailedAsserts().size());
         assertEquals(
             List.of(
-                new TriggeredAssertion("rule1", "pattern1", "error", "//book", "@attr1"),
-                new TriggeredAssertion("rule1", "pattern1", "error", "//book", "@attr1"),
-                new TriggeredAssertion("rule1", "pattern1", "error", "//book", "@attr2"),
-                new TriggeredAssertion("rule4", "pattern2", "error", "//*[@id]", "@attr1"),
-                new TriggeredAssertion("rule4", "pattern2", "error", "//*[@id]", "@attr1"),
-                new TriggeredAssertion("rule4", "pattern2", "error", "//*[@id]", "@attr2")
+                new TriggeredAssertion("rule1", "pattern1", "error", "pattern1 rule1 attr1", "//book", "@attr1"),
+                new TriggeredAssertion("rule1", "pattern1", "error", "pattern1 rule1 attr1", "//book", "@attr1"),
+                new TriggeredAssertion("rule1", "pattern1", "error", "pattern1 rule1 attr2", "//book", "@attr2"),
+                new TriggeredAssertion("rule4", "pattern2", "error", "pattern2 rule4 attr1", "//*[@id]", "@attr1"),
+                new TriggeredAssertion("rule4", "pattern2", "error", "pattern2 rule4 attr1", "//*[@id]", "@attr1"),
+                new TriggeredAssertion("rule4", "pattern2", "error", "pattern2 rule4 attr2", "//*[@id]", "@attr2")
 
             ),
             report.getFailedAsserts()

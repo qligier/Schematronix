@@ -14,12 +14,12 @@ import lombok.Data;
 public class TriggeredAssertion {
 
     /**
-     * The rule Id, if any.
+     * The rule id, if any.
      */
     private String ruleId;
 
     /**
-     * The Id of the pattern the rule belongs to, if any.
+     * The id of the pattern the rule belongs to, if any.
      */
     private String patternId;
 
@@ -27,6 +27,11 @@ public class TriggeredAssertion {
      * The assertion role.
      */
     private String role;
+
+    /**
+     * The assertion message.
+     */
+    private String message;
 
     /**
      * The rule context, as an XPath expression.

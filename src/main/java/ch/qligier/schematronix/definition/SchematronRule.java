@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Log
 public class SchematronRule implements Cloneable {
 

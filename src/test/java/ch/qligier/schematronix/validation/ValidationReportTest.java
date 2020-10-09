@@ -32,7 +32,7 @@ class ValidationReportTest {
     void testValidityStatus() {
         ValidationReport report = new ValidationReport();
         report.addFailedAssert(new TriggeredAssertion(
-            "ruleId", "patternId", "role", "ruleContext", "test"
+            "ruleId", "patternId", "role", "message", "ruleContext", "test"
         ));
         assertFalse(report.isValid());
         assertEquals(1, report.getFailedAsserts().size());
@@ -40,7 +40,7 @@ class ValidationReportTest {
 
         report = new ValidationReport();
         report.addSuccessfulReport(new TriggeredAssertion(
-            "ruleId", "patternId", "role", "ruleContext", "test"
+            "ruleId", "patternId", "role", "message", "ruleContext", "test"
         ));
         assertTrue(report.isValid());
         assertEquals(0, report.getFailedAsserts().size());

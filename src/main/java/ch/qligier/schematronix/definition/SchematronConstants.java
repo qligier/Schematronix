@@ -26,6 +26,7 @@ public class SchematronConstants {
     public static final String TITLE_TAG_NAME = "title";
     public static final String NAMESPACE_TAG_NAME = "ns";
     public static final String INCLUDE_TAG_NAME = "include";
+    public static final String VALUE_OF_TAG_NAME = "value-of";
 
     public static final String SCHEMATRON_NAMESPACE = "http://purl.oclc.org/dsdl/schematron";
 }

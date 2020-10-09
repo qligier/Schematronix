@@ -1,5 +1,6 @@
 package ch.qligier.schematronix;
 
+import ch.qligier.schematronix.exceptions.SchematronixFastStopException;
 import ch.qligier.schematronix.exceptions.SchematronixParsingException;
 import ch.qligier.schematronix.exceptions.SchematronixValidationException;
 import ch.qligier.schematronix.definition.SchematronConstants;
@@ -12,12 +13,11 @@ import net.sf.saxon.lib.Feature;
 import net.sf.saxon.lib.FeatureKeys;
 import net.sf.saxon.s9api.*;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.events.*;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
@@ -139,26 +139,27 @@ public class SchematronixValidator {
      *
      * @param configuration The validator configuration to use.
      * @return the validation report containing the error messages, if any.
-     * @throws SaxonApiException            if there is an error while compiling/executing an XPath expression.
-     * @throws SchematronixParsingException if there is an error with the Schematronix file.
-     * @throws XMLStreamException           if StAX fails to create a reader for the Schematronix file.
+     * @throws SaxonApiException               if there is an error while compiling/executing an XPath expression.
+     * @throws SchematronixParsingException    if there is an error with the Schematronix file.
+     * @throws SchematronixValidationException if the validation has encountered an exception.
+     * @throws XMLStreamException              if StAX fails to create a reader for the Schematronix file.
      */
     @NonNull
-    public ValidationReport validate(@NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixParsingException, XMLStreamException {
+    public ValidationReport validate(@NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixParsingException, XMLStreamException, SchematronixValidationException {
         final ValidationReport report = new ValidationReport();
         final XMLEventReader schematronixReader = this.schematronixReaderFactory.createXMLEventReader(this.schematronFileSource);
 
         while (schematronixReader.hasNext()) {
-            final XMLEvent nextEvent;
+            final XMLEvent event;
             try {
-                nextEvent = schematronixReader.nextEvent();
+                event = schematronixReader.nextEvent();
             } catch (final XMLStreamException exception) {
                 schematronixReader.close();
                 throw new SchematronixParsingException("Error while parsing the Schematronix file: " + exception.getMessage());
             }
 
-            if (nextEvent.isStartElement()) {
-                final StartElement startElement = nextEvent.asStartElement();
+            if (event.isStartElement()) {
+                final StartElement startElement = event.asStartElement();
                 switch (startElement.getName().getLocalPart()) {
                     case SchematronConstants.NAMESPACE_TAG_NAME:
                         this.addNamespace(
@@ -172,19 +173,22 @@ public class SchematronixValidator {
                     case SchematronConstants.RULE_TAG_NAME:
                         this.createRule(
                             getAttributeValue(startElement, "context"),
-                            getAttributeValue(startElement, "id")
+                            getAttributeValue(startElement, "id"),
+                            configuration
                         );
                         break;
                     case SchematronConstants.ASSERT_TAG_NAME:
                         this.addAssertToRule(
                             getAttributeValue(startElement, "test"),
-                            getAttributeValue(startElement, "role")
+                            getAttributeValue(startElement, "role"),
+                            this.parseAssertionMessageNodes(SchematronConstants.ASSERT_TAG_NAME, schematronixReader)
                         );
                         break;
                     case SchematronConstants.REPORT_TAG_NAME:
                         this.addReportToRule(
                             getAttributeValue(startElement, "test"),
-                            getAttributeValue(startElement, "role")
+                            getAttributeValue(startElement, "role"),
+                            this.parseAssertionMessageNodes(SchematronConstants.REPORT_TAG_NAME, schematronixReader)
                         );
                         break;
                     case SchematronConstants.LET_TAG_NAME:
@@ -195,14 +199,15 @@ public class SchematronixValidator {
                         break;
                     case SchematronConstants.ROOT_TAG_NAME:
                     case SchematronConstants.TITLE_TAG_NAME:
+                    case SchematronConstants.VALUE_OF_TAG_NAME:
                         // Allowed elements that are ignored
                         break;
                     default:
                         schematronixReader.close();
                         throw new SchematronixParsingException("Unknown '" + startElement.getName().getLocalPart() + "' element");
                 }
-            } else if (nextEvent.isEndElement()) { //NOSONAR, we don't care about other cases
-                final EndElement endElement = nextEvent.asEndElement();
+            } else if (event.isEndElement()) { //NOSONAR, we don't care about other cases
+                final EndElement endElement = event.asEndElement();
                 switch (endElement.getName().getLocalPart()) {
                     case SchematronConstants.PATTERN_TAG_NAME:
                         this.closePattern();
@@ -210,7 +215,7 @@ public class SchematronixValidator {
                     case SchematronConstants.RULE_TAG_NAME:
                         try {
                             this.currentRule.execute(report, configuration); //NOSONAR, the parser ensures that a rule was opened before that
-                        } catch (final SchematronixValidationException exception) {
+                        } catch (final SchematronixFastStopException exception) {
                             // A SchematronixValidationException is thrown at the first error in fast failing mode
                             return report;
                         }
@@ -224,6 +229,36 @@ public class SchematronixValidator {
 
         schematronixReader.close();
         return report;
+    }
+
+    /**
+     * Parses the content of an assertion tag ({@code <assert>} or {@code <report>}).
+     *
+     * @param assertionTagName   The local name of the assertion tag (either 'assert' or 'report').
+     * @param schematronixReader The StAX reader for the Schematronix file.
+     * @return the list of parsed nodes.
+     * @throws XMLStreamException           if StAX fails to read a part of the Schematronix file.
+     * @throws SchematronixParsingException if the {@code <value-of>} is missing its 'select' attribute.
+     */
+    private List<ValidationRule.MessageNode> parseAssertionMessageNodes(@NonNull final String assertionTagName,
+                                                                        @NonNull final XMLEventReader schematronixReader) throws XMLStreamException, SchematronixParsingException {
+        final List<ValidationRule.MessageNode> messageNodes = new ArrayList<>();
+        // Process the content of the assert
+        while (true) {
+            final XMLEvent innerEvent = schematronixReader.nextEvent();
+            if (innerEvent.isEndElement() && ((EndElement) innerEvent).getName().getLocalPart().equals(assertionTagName)) {
+                break; // Exit the inner event loop, the assert has bee closed
+            } else if (innerEvent.isCharacters()) {
+                messageNodes.add(new ValidationRule.MessageTextNode(((Characters) innerEvent).getData()));
+            } else if (innerEvent.isStartElement() && ((StartElement) innerEvent).getName().getLocalPart().equals(SchematronConstants.VALUE_OF_TAG_NAME)) {
+                final Attribute select = ((StartElement) innerEvent).getAttributeByName(new QName("select"));
+                if (select == null) {
+                    throw new SchematronixParsingException("A 'value-of' element is missing its 'select' attribute");
+                }
+                messageNodes.add(new ValidationRule.MessageValueOfNode(select.getValue()));
+            }
+        }
+        return messageNodes;
     }
 
     /**
@@ -276,11 +311,13 @@ public class SchematronixValidator {
      *
      * @param ruleContextXpath The XPath expression of the context.
      * @param ruleId           The rule ID or {@code null} if it's not defined.
+     * @param configuration    The validator configuration to use.
      * @throws SaxonApiException            if an error is encountered when compiling an XPath expression.
      * @throws SchematronixParsingException if the rule {@code context} or {@code pattern} is {@code null}.
      */
     private void createRule(final String ruleContextXpath,
-                            final String ruleId) throws SaxonApiException, SchematronixParsingException {
+                            final String ruleId,
+                            @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixParsingException {
         if (ruleContextXpath == null) {
             throw new SchematronixParsingException("A 'rule' element is missing its 'context' attribute");
         }
@@ -294,23 +331,26 @@ public class SchematronixValidator {
             this.namespaces,
             ruleContext,
             this.schematronixDirectoryPath,
-            this.assertedNodes
+            this.assertedNodes,
+            configuration,
+            ruleId,
+            this.currentPatternId,
+            ruleContextXpath
         );
-        this.currentRule.setId(ruleId);
-        this.currentRule.setPattern(this.currentPatternId);
-        this.currentRule.setContextXpathExpression(ruleContextXpath);
     }
 
     /**
      * Adds an assertion to the current validation rule.
      *
-     * @param test The assertion test as an XPath expression.
-     * @param role The assertion role.
+     * @param test         The assertion test as an XPath expression.
+     * @param role         The assertion role.
+     * @param messageNodes The assertion message as a list of nodes.
      * @throws SaxonApiException            if an error is encountered when compiling an XPath expression.
      * @throws SchematronixParsingException if the assert appears outside a rule or is missing its {@code test}.
      */
     private void addAssertToRule(final String test,
-                                 String role) throws SaxonApiException, SchematronixParsingException {
+                                 String role,
+                                 @NonNull final List<ValidationRule.MessageNode> messageNodes) throws SaxonApiException, SchematronixParsingException {
         if (this.currentRule == null) {
             throw new SchematronixParsingException("An 'assert' element appears outside a 'rule' element");
         }
@@ -321,19 +361,21 @@ public class SchematronixValidator {
             role = "";
         }
 
-        this.currentRule.addAssert(test, role);
+        this.currentRule.addAssert(test, role, messageNodes);
     }
 
     /**
      * Adds a report to the current validation rule.
      *
-     * @param test The report's test as an XPath expression.
-     * @param role The report's role.
+     * @param test         The report test as an XPath expression.
+     * @param role         The report role.
+     * @param messageNodes The report message as a list of nodes.
      * @throws SaxonApiException            if an error is encountered when compiling an XPath expression.
      * @throws SchematronixParsingException if the assert appears outside a rule or is missing its {@code test}.
      */
     private void addReportToRule(final String test,
-                                 String role) throws SaxonApiException, SchematronixParsingException {
+                                 String role,
+                                 @NonNull final List<ValidationRule.MessageNode> messageNodes) throws SaxonApiException, SchematronixParsingException {
         if (this.currentRule == null) {
             throw new SchematronixParsingException("A 'report' element appears outside a 'rule' element");
         }
@@ -344,7 +386,7 @@ public class SchematronixValidator {
             role = "";
         }
 
-        this.currentRule.addReport(test, role);
+        this.currentRule.addReport(test, role, messageNodes);
     }
 
     /**
@@ -379,7 +421,8 @@ public class SchematronixValidator {
      */
     private static String getAttributeValue(@NonNull final StartElement element,
                                             @NonNull final String attributeName) {
-        return element.getAttributeByName(new javax.xml.namespace.QName(attributeName)).getValue();
+        final Attribute attribute = element.getAttributeByName(new javax.xml.namespace.QName(attributeName));
+        return (attribute != null) ? attribute.getValue() : null;
     }
 
     /**

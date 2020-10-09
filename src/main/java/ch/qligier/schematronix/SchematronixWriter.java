@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import lombok.NonNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -108,12 +109,18 @@ public class SchematronixWriter {
                             document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.ASSERT_TAG_NAME);
                         assertElement.setAttribute("test", ((SchematronAssert) child).getTest());
                         assertElement.setAttribute("role", ((SchematronAssert) child).getRole());
+                        for (final Node messageNode : ((SchematronAssert) child).getMessageNodes()) {
+                            assertElement.appendChild(document.importNode(messageNode, true));
+                        }
                         ruleElement.appendChild(assertElement);
                     } else if (child instanceof SchematronReport) {
                         final Element reportElement =
                             document.createElementNS(SchematronConstants.SCHEMATRON_NAMESPACE, SchematronConstants.REPORT_TAG_NAME);
                         reportElement.setAttribute("test", ((SchematronReport) child).getTest());
                         reportElement.setAttribute("role", ((SchematronReport) child).getRole());
+                        for (final Node messageNode : ((SchematronReport) child).getMessageNodes()) {
+                            reportElement.appendChild(document.importNode(messageNode, true));
+                        }
                         ruleElement.appendChild(reportElement);
                     } else if (child instanceof SchematronLet) {
                         final Element letElement =

@@ -1,21 +1,19 @@
 package ch.qligier.schematronix.validation;
 
+import ch.qligier.schematronix.exceptions.SchematronixFastStopException;
 import ch.qligier.schematronix.exceptions.SchematronixValidationException;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import net.sf.saxon.s9api.*;
 
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A rule of the Schematronix validator. A rule is made of variable definitions and assertions that apply to a list of context items.
  *
  * @author Quentin Ligier
  */
-@Data
 public class ValidationRule {
 
     /**
@@ -60,6 +58,11 @@ public class ValidationRule {
     private final List<Integer> patternAssertedNodes;
 
     /**
+     * The validator configuration to use.
+     */
+    private final ValidatorConfiguration configuration;
+
+    /**
      * Constructs a new validation rule.
      *
      * @param processor                 The XPath processor.
@@ -67,12 +70,20 @@ public class ValidationRule {
      * @param contextItems              The rule context as a list of evaluated items (nodes, values).
      * @param schematronixDirectoryPath The path of the Schematronix file parent directory or {@code null} if it's not needed.
      * @param patternAssertedNodes      The list of hashes of nodes that have already been asserted in this pattern.
+     * @param configuration             The validator configuration to use.
+     * @param ruleId                    The rule Id.
+     * @param patternId                 The pattern Id.
+     * @param contextXpathExpression    The rule context, as an XPath expression.
      */
     public ValidationRule(@NonNull final Processor processor,
                           @NonNull final Map<String, String> namespaces,
                           @NonNull final XdmValue contextItems,
                           final URI schematronixDirectoryPath,
-                          @NonNull final List<Integer> patternAssertedNodes) {
+                          @NonNull final List<Integer> patternAssertedNodes,
+                          @NonNull final ValidatorConfiguration configuration,
+                          final String ruleId,
+                          @NonNull final String patternId,
+                          @NonNull final String contextXpathExpression) {
         this.contextItems = contextItems;
         this.patternAssertedNodes = patternAssertedNodes;
         this.xpathCompiler = processor.newXPathCompiler();
@@ -82,6 +93,10 @@ public class ValidationRule {
         if (schematronixDirectoryPath != null) {
             this.xpathCompiler.setBaseURI(schematronixDirectoryPath);
         }
+        this.configuration = configuration;
+        this.id = ruleId;
+        this.pattern = patternId;
+        this.contextXpathExpression = contextXpathExpression;
     }
 
     /**
@@ -107,15 +122,18 @@ public class ValidationRule {
      *
      * @param assertXpathExpression The assert XPath expression.
      * @param assertRole            The assert role.
+     * @param messageNodes          The report message as a list of nodes.
      * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
      */
     public void addAssert(@NonNull final String assertXpathExpression,
-                          @NonNull final String assertRole) throws SaxonApiException {
+                          @NonNull final String assertRole,
+                          @NonNull final List<ValidationRule.MessageNode> messageNodes) throws SaxonApiException {
         final Assert anAssert = new Assert();
         anAssert.setNbVariables(this.definedVariableNames.size()); // Store the number of variables that were defined before this assert
         anAssert.setXpath(assertXpathExpression);
         anAssert.setRole(assertRole);
         anAssert.setExecutable(this.xpathCompiler.compile(assertXpathExpression));
+        anAssert.getMessageNodes().addAll(messageNodes);
         this.children.add(anAssert);
     }
 
@@ -124,28 +142,32 @@ public class ValidationRule {
      *
      * @param reportXpathExpression The report's XPath expression.
      * @param reportRole            The report's role.
+     * @param messageNodes          The report message as a list of nodes.
      * @throws SaxonApiException if an error is encountered when compiling the XPath expression.
      */
     public void addReport(@NonNull final String reportXpathExpression,
-                          @NonNull final String reportRole) throws SaxonApiException {
+                          @NonNull final String reportRole,
+                          @NonNull final List<ValidationRule.MessageNode> messageNodes) throws SaxonApiException {
         final Report report = new Report();
         report.setNbVariables(this.definedVariableNames.size()); // Store the number of variables that were defined before this report
         report.setXpath(reportXpathExpression);
         report.setRole(reportRole);
         report.setExecutable(this.xpathCompiler.compile(reportXpathExpression));
+        report.getMessageNodes().addAll(messageNodes);
         this.children.add(report);
     }
 
     /**
      * Executes the validation rule and stores the results in the report. If failFast is set, the validation stops at the first error.
      *
-     * @param report   The report that will be updated with the rule validation results.
+     * @param report        The report that will be updated with the rule validation results.
      * @param configuration The validator configuration to use.
      * @throws SaxonApiException               if the execution of an XPath expression fails.
-     * @throws SchematronixValidationException if the validation has been stopped at the first error.
+     * @throws SchematronixValidationException if the validation has encountered an exception.
+     * @throws SchematronixFastStopException   if the validation has failed while on fast validation mode.
      */
     public void execute(@NonNull final ValidationReport report,
-                        @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException {
+                        @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException, SchematronixFastStopException {
         for (final XdmItem contextNode : this.contextItems) {
             final int nodeHash = contextNode.hashCode();
 
@@ -164,19 +186,20 @@ public class ValidationRule {
     /**
      * Executes the validation rule on a single item of the context. The validation stops at the first encountered error.
      *
-     * @param contextItem The context item on which to execute the validation rule.
-     * @param report      The report that will be updated with the rule validation results.
+     * @param contextItem   The context item on which to execute the validation rule.
+     * @param report        The report that will be updated with the rule validation results.
      * @param configuration The validator configuration to use.
      * @throws SaxonApiException               if an error arises during the XPath expression execution.
      * @throws SchematronixValidationException if the assert fails on the given value.
+     * @throws SchematronixFastStopException   if the validation has failed while on fast validation mode.
      */
     private void executeSingle(@NonNull final XdmItem contextItem,
                                @NonNull final ValidationReport report,
-                               @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException {
+                               @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException, SchematronixFastStopException {
         // The list of variables and their evaluated value
         final Map<String, XdmValue> variables = new HashMap<>();
 
-        for (final Child child : this.getChildren()) {
+        for (final Child child : this.children) {
             // Create and prepare a new XPath selector tuned for this child
             final XPathSelector selector = child.getExecutable().load();
             selector.setContextItem(contextItem);
@@ -198,27 +221,29 @@ public class ValidationRule {
                 if (!selector.effectiveBooleanValue()) {
                     final Assert failedAssert = (Assert) child;
 
-                    report.getFailedAsserts().add(new TriggeredAssertion(
-                        this.id,
-                        this.pattern,
+                    report.getFailedAsserts().add(this.toTriggeredAssertion(
+                        contextItem,
+                        variables,
                         failedAssert.getRole(),
-                        this.contextXpathExpression,
-                        failedAssert.getXpath()
+                        failedAssert.getXpath(),
+                        failedAssert.getMessageNodes(),
+                        configuration
                     ));
                     if (configuration.isFailFast()) {
-                        throw new SchematronixValidationException("Failed validation, stopping early");
+                        throw new SchematronixFastStopException();
                     }
                 }
             } else {
                 // If the report selector evaluates to 'true', it has succeeded
                 if (!selector.effectiveBooleanValue()) {
                     final Report successfulReport = (Report) child;
-                    report.getSuccessfulReports().add(new TriggeredAssertion(
-                        this.id,
-                        this.pattern,
+                    report.getSuccessfulReports().add(this.toTriggeredAssertion(
+                        contextItem,
+                        variables,
                         successfulReport.getRole(),
-                        this.contextXpathExpression,
-                        successfulReport.getXpath()
+                        successfulReport.getXpath(),
+                        successfulReport.getMessageNodes(),
+                        configuration
                     ));
                 }
             }
@@ -233,6 +258,63 @@ public class ValidationRule {
      */
     private static net.sf.saxon.s9api.QName toQName(@NonNull final String variableName) {
         return new net.sf.saxon.s9api.QName(variableName);
+    }
+
+    /**
+     * Constructs a {@link TriggeredAssertion} from the current.
+     *
+     * @param contextItem   The context item on which the assertion was executed.
+     * @param variables     The list of variables and their evaluated value.
+     * @param role          The assertion role.
+     * @param test          The test that failed, as an XPath expression.
+     * @param messageNodes  The assertion message nodes.
+     * @param configuration The validator configuration to use.
+     * @return the constructed {@link TriggeredAssertion}.
+     * @throws SaxonApiException               if the processing of {@code <value-of>} nodes fails.
+     * @throws SchematronixValidationException if the processing of {@code <value-of>} nodes fails.
+     */
+    private TriggeredAssertion toTriggeredAssertion(@NonNull final XdmItem contextItem,
+                                                    final Map<String, XdmValue> variables,
+                                                    final String role,
+                                                    @NonNull final String test,
+                                                    @NonNull final List<MessageNode> messageNodes,
+                                                    @NonNull final ValidatorConfiguration configuration) throws SaxonApiException, SchematronixValidationException {
+        final String message;
+        if (configuration.isEvaluateMessageNodes()) {
+            final StringBuilder stringBuilder = new StringBuilder();
+            for (final MessageNode messageNode : messageNodes) {
+                if (messageNode instanceof MessageTextNode) {
+                    stringBuilder.append(((MessageTextNode) messageNode).getContent());
+                } else {
+                    final XPathSelector selector = this.xpathCompiler.compile(((MessageValueOfNode) messageNode).getSelector()).load();
+                    selector.setContextItem(contextItem);
+                    for (int i = 0; i < variables.size(); ++i) {
+                        final String previousVariableName = this.definedVariableNames.get(i);
+                        selector.setVariable(
+                            toQName(previousVariableName),
+                            variables.get(previousVariableName)
+                        );
+                    }
+                    final XdmValue xdmValue = selector.evaluate();
+                    if (xdmValue.size() != 1) {
+                        throw new SchematronixValidationException("The 'value-of' selector yielded no value or multiple values");
+                    }
+                    stringBuilder.append(xdmValue.itemAt(0).getStringValue());
+                }
+            }
+            message = stringBuilder.toString();
+        } else {
+            message = messageNodes.stream().map(MessageNode::toString).collect(Collectors.joining());
+        }
+
+        return new TriggeredAssertion(
+            this.id,
+            this.pattern,
+            role,
+            message,
+            this.contextXpathExpression,
+            test
+        );
     }
 
     /**
@@ -292,6 +374,11 @@ public class ValidationRule {
          */
         @NonNull
         private String role;
+
+        /**
+         * The list of message nodes.
+         */
+        private final List<MessageNode> messageNodes = new ArrayList<>();
     }
 
     /**
@@ -313,5 +400,56 @@ public class ValidationRule {
          */
         @NonNull
         private String role;
+
+        /**
+         * The list of message nodes.
+         */
+        private final List<MessageNode> messageNodes = new ArrayList<>();
+    }
+
+    /**
+     * A node in an assertion message.
+     */
+    @Data
+    public abstract static class MessageNode {
+
+        public abstract String toString();
+    }
+
+    /**
+     * A text node in an assertion message.
+     */
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    public static class MessageTextNode extends MessageNode {
+
+        /**
+         * The content of the text node.
+         */
+        private String content;
+
+        public String toString() {
+            return this.content;
+        }
+    }
+
+    /**
+     * A {@code value-of} node in an assertion message.
+     */
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    public static class MessageValueOfNode extends MessageNode {
+
+        /**
+         * The value of the {@code select} attribute.
+         */
+        private String selector;
+
+        public String toString() {
+            return String.format("<value-of select=\"%s\" />", this.selector);
+        }
+
     }
 }

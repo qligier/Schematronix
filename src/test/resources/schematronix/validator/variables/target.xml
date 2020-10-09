@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<library>
+    <times>
+        <time>0:00:00</time>
+        <time>12:34:56</time>
+        <time>12:34:63</time>
+        <time>24:34:23</time>
+    </times>
+</library>
