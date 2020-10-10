@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * <p>
  * It is used to verify that both XML parsers used by the validator are safe against XXE injections.
  *
+ * RENAME to safety
+ *
  * @author Quentin Ligier
  */
 class Sample2Test {

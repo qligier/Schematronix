@@ -23,16 +23,22 @@ public class ValidatorConfiguration {
     final boolean evaluateMessageNodes;
 
     /**
+     * Whether to compute the node locations of triggered assertions ({@code true}) or not ({@code false}). The validation is faster if this
+     * option is disabled but the report is less detailed.
+     */
+    final boolean computeNodeLocations;
+
+    /**
      * A pre-defined, fast validation configuration.
      */
     public static ValidatorConfiguration fastValidation() {
-        return new ValidatorConfiguration(true, false);
+        return new ValidatorConfiguration(true, false, false);
     }
 
     /**
      * A pre-defined, full validation configuration.
      */
     public static ValidatorConfiguration fullValidation() {
-        return new ValidatorConfiguration(false, true);
+        return new ValidatorConfiguration(false, true, true);
     }
 }

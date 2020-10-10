@@ -38,8 +38,8 @@ public class NamespacesTest {
 
         assertFalse(report.isValid());
         assertEquals(List.of(
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780575075344'", "//book:book", "not(@isbn:isbn)"),
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780553573398'", "//book:book", "not(@isbn:isbn)")
+            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780575075344'", "/library[1]/book[1]", "//book:book", "not(@isbn:isbn)"),
+            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780553573398'", "/library[1]/book[2]", "//book:book", "not(@isbn:isbn)")
         ), report.getFailedAsserts());
     }
 }

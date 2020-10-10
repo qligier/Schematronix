@@ -38,8 +38,8 @@ public class VariablesTest {
 
         assertFalse(report.isValid());
         assertEquals(List.of(
-            new TriggeredAssertion("rule1", "pattern1", "", "Seconds shall be between 0 and 59, found '63'", "//times/time", "$seconds >= 0 and $seconds <= 59"),
-            new TriggeredAssertion("rule1", "pattern1", "", "Hours shall be between 0 and 23, found '24'", "//times/time", "$hours >= 0 and $hours <= 23")
+            new TriggeredAssertion("rule1", "pattern1", "", "Seconds shall be between 0 and 59, found '63'", "/library[1]/times[1]/time[3]", "//times/time", "$seconds >= 0 and $seconds <= 59"),
+            new TriggeredAssertion("rule1", "pattern1", "", "Hours shall be between 0 and 23, found '24'", "/library[1]/times[1]/time[4]", "//times/time", "$hours >= 0 and $hours <= 23")
         ), report.getFailedAsserts());
     }
 }

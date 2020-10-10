@@ -34,6 +34,11 @@ public class TriggeredAssertion {
     private String message;
 
     /**
+     * The rule context node location.
+     */
+    private String location;
+
+    /**
      * The rule context, as an XPath expression.
      */
     private String ruleContext;

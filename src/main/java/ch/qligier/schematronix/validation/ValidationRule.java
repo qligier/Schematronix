@@ -286,20 +286,9 @@ public class ValidationRule {
                 if (messageNode instanceof MessageTextNode) {
                     stringBuilder.append(((MessageTextNode) messageNode).getContent());
                 } else {
-                    final XPathSelector selector = this.xpathCompiler.compile(((MessageValueOfNode) messageNode).getSelector()).load();
-                    selector.setContextItem(contextItem);
-                    for (int i = 0; i < variables.size(); ++i) {
-                        final String previousVariableName = this.definedVariableNames.get(i);
-                        selector.setVariable(
-                            toQName(previousVariableName),
-                            variables.get(previousVariableName)
-                        );
-                    }
-                    final XdmValue xdmValue = selector.evaluate();
-                    if (xdmValue.size() != 1) {
-                        throw new SchematronixValidationException("The 'value-of' selector yielded no value or multiple values");
-                    }
-                    stringBuilder.append(xdmValue.itemAt(0).getStringValue());
+                    stringBuilder.append(
+                        this.getSingleValueFromXpathEvaluation(((MessageValueOfNode) messageNode).getSelector(), contextItem, variables)
+                    );
                 }
             }
             message = stringBuilder.toString();
@@ -307,14 +296,50 @@ public class ValidationRule {
             message = messageNodes.stream().map(MessageNode::toString).collect(Collectors.joining());
         }
 
+        String location = null;
+        if (this.configuration.isComputeNodeLocations()) {
+            location = this.getSingleValueFromXpathEvaluation("replace(path(), \"Q[{][^}]*[}]\", \"\")", contextItem, variables);
+        }
+
         return new TriggeredAssertion(
             this.id,
             this.pattern,
             role,
             message,
+            location,
             this.contextXpathExpression,
             test
         );
+    }
+
+    /**
+     * Evaluates an XPath expression on a single context item and returns a single result as a string. If zero or multiple results are
+     * yielded by the XPath evaluation, an exception is thrown.
+     *
+     * @param xpathExpression The XPath expression to execute.
+     * @param contextItem     The context item on which to execute the XPath expression.
+     * @param variables       The list of variables and their evaluated value.
+     * @return the result of the XPath evaluation.
+     * @throws SaxonApiException               if the XPath cannot be evaluated.
+     * @throws SchematronixValidationException if the XPath evaluation does not yield a single value.
+     */
+    String getSingleValueFromXpathEvaluation(@NonNull final String xpathExpression,
+                                             @NonNull final XdmItem contextItem,
+                                             final Map<String, XdmValue> variables) throws SaxonApiException, SchematronixValidationException {
+        final XPathSelector selector = this.xpathCompiler.compile(xpathExpression).load();
+        selector.setContextItem(contextItem);
+        for (int i = 0; i < variables.size(); ++i) {
+            final String previousVariableName = this.definedVariableNames.get(i);
+            selector.setVariable(
+                toQName(previousVariableName),
+                variables.get(previousVariableName)
+            );
+        }
+        final XdmValue xdmValue = selector.evaluate();
+        if (xdmValue.size() != 1) {
+            throw new SchematronixValidationException("The XPath selector yielded no value or multiple values");
+        }
+        return xdmValue.itemAt(0).getStringValue();
     }
 
     /**

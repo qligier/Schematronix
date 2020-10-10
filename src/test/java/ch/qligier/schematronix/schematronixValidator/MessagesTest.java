@@ -35,19 +35,19 @@ class MessagesTest {
         final File xmlFile = new File(Objects.requireNonNull(classLoader.getResource(RES_DIR + "target.xml")).getFile());
 
         final SchematronixValidator validator = new SchematronixValidator(new StreamSource(xmlFile), definitionFile);
-        ValidationReport report = validator.validate(ValidatorConfiguration.fullValidation());
+        ValidationReport report = validator.validate(new ValidatorConfiguration(false, true, false));
 
         assertFalse(report.isValid());
         assertEquals(List.of(
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780575075344'", "//book", "not(@isbn)"),
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780553573398'", "//book", "not(@isbn)")
+            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780575075344'", null, "//book", "not(@isbn)"),
+            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780553573398'", null, "//book", "not(@isbn)")
         ), report.getFailedAsserts());
 
-        report = validator.validate(new ValidatorConfiguration(false, false));
+        report = validator.validate(new ValidatorConfiguration(false, false, false));
         assertFalse(report.isValid());
         assertEquals(List.of(
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '<value-of select=\"@isbn\" />'", "//book", "not(@isbn)"),
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '<value-of select=\"@isbn\" />'", "//book", "not(@isbn)")
+            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '<value-of select=\"@isbn\" />'", null, "//book", "not(@isbn)"),
+            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '<value-of select=\"@isbn\" />'", null, "//book", "not(@isbn)")
         ), report.getFailedAsserts());
     }
 
@@ -92,6 +92,6 @@ class MessagesTest {
             exception = e;
         }
         assertTrue(exception instanceof SchematronixValidationException);
-        assertEquals("The 'value-of' selector yielded no value or multiple values", exception.getMessage());
+        assertEquals("The XPath selector yielded no value or multiple values", exception.getMessage());
     }
 }
