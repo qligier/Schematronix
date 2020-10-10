@@ -4,6 +4,7 @@ import ch.qligier.schematronix.exceptions.SchematronixFastStopException;
 import ch.qligier.schematronix.exceptions.SchematronixValidationException;
 import lombok.*;
 import net.sf.saxon.s9api.*;
+import net.sf.saxon.tree.tiny.TinyElementImpl;
 
 import java.net.URI;
 import java.util.*;
@@ -285,10 +286,12 @@ public class ValidationRule {
             for (final MessageNode messageNode : messageNodes) {
                 if (messageNode instanceof MessageTextNode) {
                     stringBuilder.append(((MessageTextNode) messageNode).getContent());
-                } else {
+                } else if (messageNode instanceof MessageValueOfNode) {
                     stringBuilder.append(
                         this.getSingleValueFromXpathEvaluation(((MessageValueOfNode) messageNode).getSelector(), contextItem, variables)
                     );
+                } else if (messageNode instanceof MessageNameNode) {
+                    stringBuilder.append(((TinyElementImpl)contextItem.itemAt(0).getUnderlyingValue()).getLocalPart());
                 }
             }
             message = stringBuilder.toString();
@@ -475,6 +478,18 @@ public class ValidationRule {
         public String toString() {
             return String.format("<value-of select=\"%s\" />", this.selector);
         }
+    }
 
+    /**
+     * A {@code name} node in an assertion message.
+     */
+    @Data
+    @EqualsAndHashCode(callSuper = false)
+    @AllArgsConstructor
+    public static class MessageNameNode extends MessageNode {
+
+        public String toString() {
+            return "<name />";
+        }
     }
 }

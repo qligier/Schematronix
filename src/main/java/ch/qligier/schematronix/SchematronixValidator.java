@@ -256,6 +256,8 @@ public class SchematronixValidator {
                     throw new SchematronixParsingException("A 'value-of' element is missing its 'select' attribute");
                 }
                 messageNodes.add(new ValidationRule.MessageValueOfNode(select.getValue()));
+            } else if (innerEvent.isStartElement() && ((StartElement) innerEvent).getName().getLocalPart().equals(SchematronConstants.VALUE_NAME_NAME)) {
+                messageNodes.add(new ValidationRule.MessageNameNode());
             }
         }
         return messageNodes;

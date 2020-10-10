@@ -40,14 +40,14 @@ class MessagesTest {
 
         assertFalse(report.isValid());
         assertEquals(
-            List.of("Found ISBN with value '9780575075344'", "Found ISBN with value '9780553573398'"),
+            List.of("Found ISBN with value '9780575075344' for tag 'book'", "Found ISBN with value '9780553573398' for tag 'book'"),
             report.getFailedAsserts().stream().map(TriggeredAssertion::getMessage).collect(Collectors.toList())
         );
 
         report = validator.validate(new ValidatorConfiguration(false, false, false));
         assertFalse(report.isValid());
         assertEquals(
-            List.of("Found ISBN with value '<value-of select=\"@isbn\" />'", "Found ISBN with value '<value-of select=\"@isbn\" />'"),
+            List.of("Found ISBN with value '<value-of select=\"@isbn\" />' for tag '<name />'", "Found ISBN with value '<value-of select=\"@isbn\" />' for tag '<name />'"),
             report.getFailedAsserts().stream().map(TriggeredAssertion::getMessage).collect(Collectors.toList())
         );
     }
