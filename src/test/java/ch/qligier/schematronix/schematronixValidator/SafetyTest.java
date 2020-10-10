@@ -5,6 +5,7 @@ import ch.qligier.schematronix.exceptions.SchematronixParsingException;
 import ch.qligier.schematronix.validation.ValidationReport;
 import ch.qligier.schematronix.validation.ValidatorConfiguration;
 import net.sf.saxon.s9api.SaxonApiException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.transform.stream.StreamSource;
@@ -13,15 +14,12 @@ import java.io.StringReader;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * A test bed for {@link SchematronixValidator}. It uses the resources of the 'sample2' folder.
- * <p>
- * It is used to verify that both XML parsers used by the validator are safe against XXE injections.
- *
- * RENAME to safety
+ * A test bed for {@link SchematronixValidator}. It is used to verify that both XML parsers used by the validator are safe against XXE
+ * injections.
  *
  * @author Quentin Ligier
  */
-class Sample2Test {
+class SafetyTest {
 
     private static final String URL_TO_FETCH = "https://api.ipify.org/";
     private static final String FILE_TO_FETCH;
@@ -38,6 +36,7 @@ class Sample2Test {
      * Tests the parser of the XML document for entity support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XML string entities are disabled in Schematronix parsing")
     void testXmlXxe1() {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<schema xmlns=\"http://purl.oclc.org/dsdl/schematron\" queryBinding=\"xslt2\">" +
@@ -61,6 +60,7 @@ class Sample2Test {
      * Tests the parser of the XML document for entity support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XML SYSTEM file entities are disabled in Schematronix parsing")
     void testXmlXxe2() {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<schema xmlns=\"http://purl.oclc.org/dsdl/schematron\" queryBinding=\"xslt2\">" +
@@ -84,6 +84,7 @@ class Sample2Test {
      * Tests the parser of the XML document for entity support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XML SYSTEM URL entities are disabled in Schematronix parsing")
     void testXmlXxe3() {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<schema xmlns=\"http://purl.oclc.org/dsdl/schematron\" queryBinding=\"xslt2\">" +
@@ -107,6 +108,7 @@ class Sample2Test {
      * Tests the parser of the XML document for XInclude support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XInclude file inclusions are disabled in Schematronix parsing")
     void testXmlXinclude1() throws Exception {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<schema xmlns=\"http://purl.oclc.org/dsdl/schematron\" queryBinding=\"xslt2\">" +
@@ -133,6 +135,7 @@ class Sample2Test {
      * Tests the parser of the XML document for XInclude support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XInclude URL inclusions are disabled in Schematronix parsing")
     void testXmlXinclude2() throws Exception {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<schema xmlns=\"http://purl.oclc.org/dsdl/schematron\" queryBinding=\"xslt2\">" +
@@ -159,6 +162,7 @@ class Sample2Test {
      * Tests the parser of the Schematronix document for entity support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XML string entities are disabled in XML target parsing")
     void testSchematronixXxe1() throws Exception {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<!DOCTYPE replace [<!ENTITY entity \"VULNERABLE\"> ]>" +
@@ -183,6 +187,7 @@ class Sample2Test {
      * Tests the parser of the Schematronix document for entity support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XML SYSTEM file entities are disabled in XML target parsing")
     void testSchematronixXxe2() throws Exception {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file:///" + FILE_TO_FETCH + "\"> ]>" +
@@ -207,6 +212,7 @@ class Sample2Test {
      * Tests the parser of the Schematronix document for entity support. It should be deactivated.
      */
     @Test
+    @DisplayName("Ensure that XML SYSTEM URL entities are disabled in XML target parsing")
     void testSchematronixXxe3() throws Exception {
         final String schematron = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"" + URL_TO_FETCH + "\"> ]>" +

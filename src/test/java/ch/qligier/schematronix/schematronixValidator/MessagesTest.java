@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,17 +39,17 @@ class MessagesTest {
         ValidationReport report = validator.validate(new ValidatorConfiguration(false, true, false));
 
         assertFalse(report.isValid());
-        assertEquals(List.of(
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780575075344'", null, "//book", "not(@isbn)"),
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '9780553573398'", null, "//book", "not(@isbn)")
-        ), report.getFailedAsserts());
+        assertEquals(
+            List.of("Found ISBN with value '9780575075344'", "Found ISBN with value '9780553573398'"),
+            report.getFailedAsserts().stream().map(TriggeredAssertion::getMessage).collect(Collectors.toList())
+        );
 
         report = validator.validate(new ValidatorConfiguration(false, false, false));
         assertFalse(report.isValid());
-        assertEquals(List.of(
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '<value-of select=\"@isbn\" />'", null, "//book", "not(@isbn)"),
-            new TriggeredAssertion("rule1", "pattern1", "", "Found ISBN with value '<value-of select=\"@isbn\" />'", null, "//book", "not(@isbn)")
-        ), report.getFailedAsserts());
+        assertEquals(
+            List.of("Found ISBN with value '<value-of select=\"@isbn\" />'", "Found ISBN with value '<value-of select=\"@isbn\" />'"),
+            report.getFailedAsserts().stream().map(TriggeredAssertion::getMessage).collect(Collectors.toList())
+        );
     }
 
     @Test
