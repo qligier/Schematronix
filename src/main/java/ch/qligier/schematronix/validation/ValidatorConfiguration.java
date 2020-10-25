@@ -1,6 +1,7 @@
 package ch.qligier.schematronix.validation;
 
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * The configuration model for the Schematronix validator.
@@ -30,14 +31,20 @@ public class ValidatorConfiguration {
 
     /**
      * A pre-defined, fast validation configuration.
+     *
+     * @return a non-null, fast validation configuration.
      */
+    @NonNull
     public static ValidatorConfiguration fastValidation() {
         return new ValidatorConfiguration(true, false, false);
     }
 
     /**
      * A pre-defined, full validation configuration.
+     *
+     * @return a non-null, full validation configuration.
      */
+    @NonNull
     public static ValidatorConfiguration fullValidation() {
         return new ValidatorConfiguration(false, true, true);
     }
