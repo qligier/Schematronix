@@ -1,5 +1,9 @@
 # Schematronix
 
+⚠️ The experiment has ended, as Schematronix has revealed much slower than [ph-schematron](https://github.com/phax/ph-schematron) with
+precompiled XSLT files (even without using its pure version). It may be possible to further speed it up but it surely requires much more
+work. Just use [ph-schematron](https://github.com/phax/ph-schematron). 🙂
+
 ![GitHub](https://img.shields.io/github/license/qligier/Schematronix)
 [![Build Status](https://travis-ci.org/qligier/Schematronix.png?branch=master)](https://travis-ci.org/qligier/Schematronix)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ch.qligier/schematronix/badge.svg?style=flat)](https://search.maven.org/artifact/ch.qligier/schematronix)
